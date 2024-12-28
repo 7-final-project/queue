@@ -6,6 +6,7 @@ import com.qring.queue.application.v1.dto.ResDTO;
 import com.qring.queue.domain.model.QueueEntity;
 import com.qring.queue.domain.model.constraint.QueueStatus;
 import com.qring.queue.presentation.v1.req.PostQueueReqDTOv1;
+import com.qring.queue.presentation.v1.req.PutQueueReqDTOv1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +30,31 @@ public class QueueControllerV1 {
         return new ResponseEntity<>(
                 ResDTO.<QueuePostResDTOv1>builder()
                         .code(HttpStatus.CREATED.value())
-                        .message("대기 등록을 성공했습니다.")
+                        .message("대기 등록에 성공했습니다.")
                         .data(QueuePostResDTOv1.of(dummyQueueEntity))
                         .build(),
                 HttpStatus.CREATED
         );
     }
 
-//    @GetMapping("/v1/queues")
-//    public ResponseEntity<ResDTO<QueueGetByIdResDTOv1>> getBy()
+    @GetMapping("/v1/queues/{id}")
+    public ResponseEntity<ResDTO<QueueGetByIdResDTOv1>> getBy(@PathVariable Long id) {
+
+        // 더미데이터 -> 추후 삭제 ---------------------------
+        QueueEntity dummyQueueEntity = QueueEntity.builder()
+                .reservationId(57L)
+                .sequence(1)
+                .status(QueueStatus.valueOf("WAITING"))
+                .build();
+        // ----------------------------------------------
+
+        return new ResponseEntity<>(
+                ResDTO.<QueueGetByIdResDTOv1>builder()
+                        .code(HttpStatus.OK.value())
+                        .message("대기 조회에 성공했습니다.")
+                        .data(QueueGetByIdResDTOv1.of(dummyQueueEntity))
+                        .build(),
+                HttpStatus.OK
+        );
+    }
 }
