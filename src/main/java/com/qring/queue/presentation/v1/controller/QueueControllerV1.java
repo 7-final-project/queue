@@ -70,4 +70,16 @@ public class QueueControllerV1 {
                 HttpStatus.OK
         );
     }
+
+    @DeleteMapping("/v1/queues/{id}")
+    public ResponseEntity<ResDTO<?>> cancelBy(@PathVariable Long id) {
+
+        return new ResponseEntity<>(
+                ResDTO.builder()
+                        .code(HttpStatus.OK.value())
+                        .message("대기 취소에 성공했습니다.")
+                        .build(),
+                HttpStatus.OK
+        );
+    }
 }
