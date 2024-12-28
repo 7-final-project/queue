@@ -6,6 +6,7 @@ import com.qring.queue.application.v1.dto.QueuePostResDTOv1;
 import com.qring.queue.application.v1.dto.ResDTO;
 import com.qring.queue.domain.model.QueueEntity;
 import com.qring.queue.domain.model.constraint.QueueStatus;
+import com.qring.queue.infrastructure.docs.QueueControllerSwagger;
 import com.qring.queue.presentation.v1.req.PostQueueReqDTOv1;
 import com.qring.queue.presentation.v1.req.PutQueueReqDTOv1;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class QueueControllerV1 {
+public class QueueControllerV1 implements QueueControllerSwagger {
 
     @PostMapping("/v1/queues")
     public ResponseEntity<ResDTO<QueuePostResDTOv1>> postBy(@RequestBody PostQueueReqDTOv1 dto) {
