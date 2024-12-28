@@ -2,10 +2,7 @@ package com.qring.queue.domain.model;
 
 import com.qring.queue.domain.model.constraint.QueueStatus;
 import io.hypersistence.utils.hibernate.id.Tsid;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +29,7 @@ public class QueueEntity {
     private int sequence;
 
     @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private QueueStatus status;
 
     @CreationTimestamp
@@ -55,9 +53,9 @@ public class QueueEntity {
     private String deletedBy;
 
     @Builder
-    public QueueEntity (Long reservationId, int sequence, String status) {
+    public QueueEntity (Long reservationId, int sequence, QueueStatus status) {
         this.reservationId = reservationId;
         this.sequence = sequence;
-        this.status = QueueStatus.valueOf(status);
+        this.status = status;
     }
 }
