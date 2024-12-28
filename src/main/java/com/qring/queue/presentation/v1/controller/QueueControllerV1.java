@@ -57,4 +57,17 @@ public class QueueControllerV1 {
                 HttpStatus.OK
         );
     }
+
+    @PutMapping("/v1/queues/{id}")
+    public ResponseEntity<ResDTO<?>> putBy(@PathVariable Long id,
+                                           @RequestBody PutQueueReqDTOv1 dto) {
+
+        return new ResponseEntity<>(
+                ResDTO.builder()
+                        .code(HttpStatus.OK.value())
+                        .message("대기 상태 수정에 성공했습니다.")
+                        .build(),
+                HttpStatus.OK
+        );
+    }
 }
