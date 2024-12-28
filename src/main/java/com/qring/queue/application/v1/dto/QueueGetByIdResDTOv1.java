@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class QueueGetByIdResDTOv1 {
 
-    private QueuePostResDTOv1.Queue queue;
+    private Queue queue;
 
-    public static QueuePostResDTOv1 of(QueueEntity queueEntity) {
-        return QueuePostResDTOv1.builder()
-                .queue(QueuePostResDTOv1.Queue.from(queueEntity))
+    public static QueueGetByIdResDTOv1 of(QueueEntity queueEntity) {
+        return QueueGetByIdResDTOv1.builder()
+                .queue(QueueGetByIdResDTOv1.Queue.from(queueEntity))
                 .build();
     }
 
@@ -29,8 +29,8 @@ public class QueueGetByIdResDTOv1 {
         private int sequence;
         private String status;
 
-        public static QueuePostResDTOv1.Queue from(QueueEntity queueEntity) {
-            return QueuePostResDTOv1.Queue.builder()
+        public static QueueGetByIdResDTOv1.Queue from(QueueEntity queueEntity) {
+            return QueueGetByIdResDTOv1.Queue.builder()
                     .sequence(queueEntity.getSequence())
                     .status(queueEntity.getStatus().toString())
                     .build();
