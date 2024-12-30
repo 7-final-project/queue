@@ -1,4 +1,4 @@
-package com.qring.queue.application.v1.dto;
+package com.qring.queue.application.global.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

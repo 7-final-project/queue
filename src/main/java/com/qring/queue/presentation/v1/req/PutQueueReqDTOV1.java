@@ -5,14 +5,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PostQueueReqDTOv1 {
+public class PutQueueReqDTOV1 {
 
     private Queue queue;
 
     @Getter
     public static class Queue {
 
-        private Long reservationId;
+        private String status;
 
     }
 }

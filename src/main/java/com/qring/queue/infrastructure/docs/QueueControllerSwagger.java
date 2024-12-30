@@ -1,11 +1,11 @@
 package com.qring.queue.infrastructure.docs;
 
-import com.qring.queue.application.v1.dto.QueueGetByIdResDTOv1;
-import com.qring.queue.application.v1.dto.QueueGetTableResDTOv1;
-import com.qring.queue.application.v1.dto.QueuePostResDTOv1;
-import com.qring.queue.application.v1.dto.ResDTO;
-import com.qring.queue.presentation.v1.req.PostQueueReqDTOv1;
-import com.qring.queue.presentation.v1.req.PutQueueReqDTOv1;
+import com.qring.queue.application.v1.res.QueueGetByIdResDTOV1;
+import com.qring.queue.application.v1.res.QueueGetTableResDTOV1;
+import com.qring.queue.application.v1.res.QueuePostResDTOV1;
+import com.qring.queue.application.global.dto.ResDTO;
+import com.qring.queue.presentation.v1.req.PostQueueReqDTOV1;
+import com.qring.queue.presentation.v1.req.PutQueueReqDTOV1;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,7 +25,7 @@ public interface QueueControllerSwagger {
             @ApiResponse(responseCode = "400", description = "대기 등록 실패", content = @Content(schema = @Schema(implementation = ResDTO.class))),
     })
     @PostMapping("/v1/queues")
-    public ResponseEntity<ResDTO<QueuePostResDTOv1>> postBy(@RequestBody PostQueueReqDTOv1 dto);
+    public ResponseEntity<ResDTO<QueuePostResDTOV1>> postBy(@RequestBody PostQueueReqDTOV1 dto);
 
 
 
@@ -35,7 +35,7 @@ public interface QueueControllerSwagger {
             @ApiResponse(responseCode = "400", description = "대기 조회 실패", content = @Content(schema = @Schema(implementation = ResDTO.class))),
     })
     @GetMapping("/v1/queues")
-    public ResponseEntity<ResDTO<QueueGetTableResDTOv1>> getBy();
+    public ResponseEntity<ResDTO<QueueGetTableResDTOV1>> getBy();
 
 
 
@@ -45,7 +45,7 @@ public interface QueueControllerSwagger {
             @ApiResponse(responseCode = "400", description = "대기 조회 실패", content = @Content(schema = @Schema(implementation = ResDTO.class))),
     })
     @GetMapping("/v1/queues/{id}")
-    public ResponseEntity<ResDTO<QueueGetByIdResDTOv1>> getBy(@PathVariable Long id);
+    public ResponseEntity<ResDTO<QueueGetByIdResDTOV1>> getBy(@PathVariable Long id);
 
 
 
@@ -56,7 +56,7 @@ public interface QueueControllerSwagger {
     })
     @PutMapping("/v1/queues/{id}")
     public ResponseEntity<ResDTO<Object>> putBy(@PathVariable Long id,
-                                           @RequestBody PutQueueReqDTOv1 dto);
+                                           @RequestBody PutQueueReqDTOV1 dto);
 
 
 

@@ -1,4 +1,4 @@
-package com.qring.queue.application.v1.dto;
+package com.qring.queue.application.v1.res;
 
 import com.qring.queue.domain.model.QueueEntity;
 import lombok.AllArgsConstructor;
@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueueGetByIdResDTOv1 {
+public class QueuePostResDTOV1 {
 
     private Queue queue;
 
-    public static QueueGetByIdResDTOv1 of(QueueEntity queueEntity) {
-        return QueueGetByIdResDTOv1.builder()
-                .queue(QueueGetByIdResDTOv1.Queue.from(queueEntity))
+    public static QueuePostResDTOV1 of(QueueEntity queueEntity) {
+        return QueuePostResDTOV1.builder()
+                .queue(Queue.from(queueEntity))
                 .build();
     }
 
@@ -29,8 +29,8 @@ public class QueueGetByIdResDTOv1 {
         private int sequence;
         private String status;
 
-        public static QueueGetByIdResDTOv1.Queue from(QueueEntity queueEntity) {
-            return QueueGetByIdResDTOv1.Queue.builder()
+        public static Queue from(QueueEntity queueEntity) {
+            return Queue.builder()
                     .sequence(queueEntity.getSequence())
                     .status(queueEntity.getStatus().toString())
                     .build();
