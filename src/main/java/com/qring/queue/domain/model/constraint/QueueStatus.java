@@ -7,9 +7,15 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum QueueStatus {
 
-    SEATED("SEATED"),
-    WAITING("WAITING"),
-    CANCELLED("CANCELLED");
+    SEATED(Status.SEATED),
+    WAITING(Status.WAITING),
+    CANCELLED(Status.CANCELLED);
 
-    private final String value;
+    private final String status;
+
+    public static class Status {
+        public static final String SEATED = "SEATED";
+        public static final String WAITING = "WAITING";
+        public static final String CANCELLED = "CANCELLED";
+    }
 }
