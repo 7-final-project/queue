@@ -53,7 +53,7 @@ public class QueueEntity {
     private String deletedBy;
 
     @Builder
-    public QueueEntity (Long reservationId, int sequence, QueueStatus status) {
+    public QueueEntity(Long reservationId, int sequence, QueueStatus status) {
         this.reservationId = reservationId;
         this.sequence = sequence;
         this.status = status;
