@@ -1,4 +1,4 @@
-package com.qring.queue.application.v1.dto;
+package com.qring.queue.application.v1.res;
 
 import com.qring.queue.domain.model.QueueEntity;
 import lombok.AllArgsConstructor;
@@ -6,22 +6,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueueGetListResDTOv1 {
+public class QueuePostResDTOV1 {
 
-    private List<Queue> queueList;
+    private Queue queue;
 
-    public static QueueGetListResDTOv1 of(List<QueueEntity> queueEntityList) {
-        return QueueGetListResDTOv1.builder()
-                .queueList(queueEntityList.stream()
-                        .map(Queue::from)
-                        .collect(Collectors.toList()))
+    public static QueuePostResDTOV1 of(QueueEntity queueEntity) {
+        return QueuePostResDTOV1.builder()
+                .queue(Queue.from(queueEntity))
                 .build();
     }
 
@@ -34,12 +29,11 @@ public class QueueGetListResDTOv1 {
         private int sequence;
         private String status;
 
-        public static QueueGetListResDTOv1.Queue from(QueueEntity queueEntity) {
-            return QueueGetListResDTOv1.Queue.builder()
+        public static Queue from(QueueEntity queueEntity) {
+            return Queue.builder()
                     .sequence(queueEntity.getSequence())
                     .status(queueEntity.getStatus().toString())
                     .build();
         }
     }
 }
-

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PutQueueReqDTOv1 {
+public class PutQueueReqDTOV1 {
 
     private Queue queue;
 
@@ -13,5 +13,6 @@ public class PutQueueReqDTOv1 {
     public static class Queue {
 
         private String status;
+
     }
 }

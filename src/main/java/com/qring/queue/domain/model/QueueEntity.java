@@ -43,7 +43,7 @@ public class QueueEntity {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    @Column(name = "created_by", updatable = false)
+    @Column(name = "created_by", nullable = false, updatable = false)
     private String createdBy;
 
     @Column(name = "modified_by")
@@ -53,9 +53,12 @@ public class QueueEntity {
     private String deletedBy;
 
     @Builder
-    public QueueEntity (Long reservationId, int sequence, QueueStatus status) {
+    public QueueEntity(Long reservationId, int sequence, QueueStatus status,
+                       String createdBy, String modifiedBy) {
         this.reservationId = reservationId;
         this.sequence = sequence;
         this.status = status;
+        this.createdBy = "tempUser";
+        this.modifiedBy = "tempUser";
     }
 }
