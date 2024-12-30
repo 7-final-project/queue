@@ -14,8 +14,8 @@ public enum QueueStatus {
     private final String status;
 
     public static class Status {
-        public static final String SEATED = "SEATED";
-        public static final String WAITING = "WAITING";
-        public static final String CANCELLED = "CANCELLED";
+        public static final String SEATED = "입장";
+        public static final String WAITING = "대기";
+        public static final String CANCELLED = "취소";
     }
 }
