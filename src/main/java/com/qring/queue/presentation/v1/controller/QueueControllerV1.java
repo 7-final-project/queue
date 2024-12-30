@@ -18,9 +18,10 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/v1/queues")
 public class QueueControllerV1 implements QueueControllerSwagger {
 
-    @PostMapping("/v1/queues")
+    @PostMapping
     public ResponseEntity<ResDTO<QueuePostResDTOV1>> postBy(@RequestBody PostQueueReqDTOV1 dto) {
 
         // 더미데이터 -> 추후 삭제 ---------------------------
@@ -42,7 +43,7 @@ public class QueueControllerV1 implements QueueControllerSwagger {
     }
 
     // 추후 예약 서비스에서 메세지 큐로 받아온 인원 수 추가 예정입니다.
-    @GetMapping("/v1/queues")
+    @GetMapping
     public ResponseEntity<ResDTO<QueueGetTableResDTOV1>> getBy() {
 
         // 더미데이터 -> 추후 삭제 ---------------------------
@@ -77,7 +78,7 @@ public class QueueControllerV1 implements QueueControllerSwagger {
     }
 
 
-    @GetMapping("/v1/queues/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResDTO<QueueGetByIdResDTOV1>> getBy(@PathVariable Long id) {
 
         // 더미데이터 -> 추후 삭제 ---------------------------
@@ -98,7 +99,7 @@ public class QueueControllerV1 implements QueueControllerSwagger {
         );
     }
 
-    @PutMapping("/v1/queues/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResDTO<Object>> putBy(@PathVariable Long id,
                                            @RequestBody PutQueueReqDTOV1 dto) {
 
@@ -111,7 +112,7 @@ public class QueueControllerV1 implements QueueControllerSwagger {
         );
     }
 
-    @DeleteMapping("/v1/queues/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResDTO<Object>> cancelBy(@PathVariable Long id) {
 
         return new ResponseEntity<>(
