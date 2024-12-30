@@ -55,7 +55,7 @@ public interface QueueControllerSwagger {
             @ApiResponse(responseCode = "400", description = "대기 수정 실패", content = @Content(schema = @Schema(implementation = ResDTO.class))),
     })
     @PutMapping("/v1/queues/{id}")
-    public ResponseEntity<ResDTO<?>> putBy(@PathVariable Long id,
+    public ResponseEntity<ResDTO<Object>> putBy(@PathVariable Long id,
                                            @RequestBody PutQueueReqDTOv1 dto);
 
 
@@ -66,5 +66,5 @@ public interface QueueControllerSwagger {
             @ApiResponse(responseCode = "400", description = "대기 취소 실패", content = @Content(schema = @Schema(implementation = ResDTO.class))),
     })
     @DeleteMapping("/v1/queues/{id}")
-    public ResponseEntity<ResDTO<?>> cancelBy(@PathVariable Long id);
+    public ResponseEntity<ResDTO<Object>> cancelBy(@PathVariable Long id);
 }

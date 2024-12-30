@@ -99,7 +99,7 @@ public class QueueControllerV1 implements QueueControllerSwagger {
     }
 
     @PutMapping("/v1/queues/{id}")
-    public ResponseEntity<ResDTO<?>> putBy(@PathVariable Long id,
+    public ResponseEntity<ResDTO<Object>> putBy(@PathVariable Long id,
                                            @RequestBody PutQueueReqDTOv1 dto) {
 
         return new ResponseEntity<>(
@@ -112,7 +112,7 @@ public class QueueControllerV1 implements QueueControllerSwagger {
     }
 
     @DeleteMapping("/v1/queues/{id}")
-    public ResponseEntity<ResDTO<?>> cancelBy(@PathVariable Long id) {
+    public ResponseEntity<ResDTO<Object>> cancelBy(@PathVariable Long id) {
 
         return new ResponseEntity<>(
                 ResDTO.builder()
