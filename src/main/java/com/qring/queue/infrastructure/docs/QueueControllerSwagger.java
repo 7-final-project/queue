@@ -35,7 +35,7 @@ public interface QueueControllerSwagger {
             @ApiResponse(responseCode = "400", description = "대기 조회 실패", content = @Content(schema = @Schema(implementation = ResDTO.class))),
     })
     @GetMapping("/v1/queues")
-    public ResponseEntity<ResDTO<QueueGetListResDTOv1>> getListBy();
+    public ResponseEntity<ResDTO<QueueGetListResDTOv1>> getBy();
 
 
 

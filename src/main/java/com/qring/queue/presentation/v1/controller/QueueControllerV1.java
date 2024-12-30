@@ -43,7 +43,7 @@ public class QueueControllerV1 implements QueueControllerSwagger {
 
     // 추후 예약 서비스에서 메세지 큐로 받아온 인원 수 추가 예정입니다.
     @GetMapping("/v1/queues")
-    public ResponseEntity<ResDTO<QueueGetListResDTOv1>> getListBy() {
+    public ResponseEntity<ResDTO<QueueGetListResDTOv1>> getBy() {
 
         // 더미데이터 -> 추후 삭제 ---------------------------
         List<QueueEntity> dummyQueueList = List.of(
