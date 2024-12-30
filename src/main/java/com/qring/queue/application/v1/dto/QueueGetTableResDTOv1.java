@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueueGetListResDTOv1 {
+public class QueueGetTableResDTOv1 {
 
     private List<Queue> queueList;
 
-    public static QueueGetListResDTOv1 of(List<QueueEntity> queueEntityList) {
-        return QueueGetListResDTOv1.builder()
+    public static QueueGetTableResDTOv1 of(List<QueueEntity> queueEntityList) {
+        return QueueGetTableResDTOv1.builder()
                 .queueList(queueEntityList.stream()
                         .map(Queue::from)
                         .collect(Collectors.toList()))
@@ -34,8 +34,8 @@ public class QueueGetListResDTOv1 {
         private int sequence;
         private String status;
 
-        public static QueueGetListResDTOv1.Queue from(QueueEntity queueEntity) {
-            return QueueGetListResDTOv1.Queue.builder()
+        public static QueueGetTableResDTOv1.Queue from(QueueEntity queueEntity) {
+            return QueueGetTableResDTOv1.Queue.builder()
                     .sequence(queueEntity.getSequence())
                     .status(queueEntity.getStatus().toString())
                     .build();

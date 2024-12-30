@@ -1,7 +1,7 @@
 package com.qring.queue.infrastructure.docs;
 
 import com.qring.queue.application.v1.dto.QueueGetByIdResDTOv1;
-import com.qring.queue.application.v1.dto.QueueGetListResDTOv1;
+import com.qring.queue.application.v1.dto.QueueGetTableResDTOv1;
 import com.qring.queue.application.v1.dto.QueuePostResDTOv1;
 import com.qring.queue.application.v1.dto.ResDTO;
 import com.qring.queue.presentation.v1.req.PostQueueReqDTOv1;
@@ -35,7 +35,7 @@ public interface QueueControllerSwagger {
             @ApiResponse(responseCode = "400", description = "대기 조회 실패", content = @Content(schema = @Schema(implementation = ResDTO.class))),
     })
     @GetMapping("/v1/queues")
-    public ResponseEntity<ResDTO<QueueGetListResDTOv1>> getBy();
+    public ResponseEntity<ResDTO<QueueGetTableResDTOv1>> getBy();
 
 
 

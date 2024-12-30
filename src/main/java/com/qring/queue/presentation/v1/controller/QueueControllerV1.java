@@ -1,7 +1,7 @@
 package com.qring.queue.presentation.v1.controller;
 
 import com.qring.queue.application.v1.dto.QueueGetByIdResDTOv1;
-import com.qring.queue.application.v1.dto.QueueGetListResDTOv1;
+import com.qring.queue.application.v1.dto.QueueGetTableResDTOv1;
 import com.qring.queue.application.v1.dto.QueuePostResDTOv1;
 import com.qring.queue.application.v1.dto.ResDTO;
 import com.qring.queue.domain.model.QueueEntity;
@@ -43,7 +43,7 @@ public class QueueControllerV1 implements QueueControllerSwagger {
 
     // 추후 예약 서비스에서 메세지 큐로 받아온 인원 수 추가 예정입니다.
     @GetMapping("/v1/queues")
-    public ResponseEntity<ResDTO<QueueGetListResDTOv1>> getBy() {
+    public ResponseEntity<ResDTO<QueueGetTableResDTOv1>> getBy() {
 
         // 더미데이터 -> 추후 삭제 ---------------------------
         List<QueueEntity> dummyQueueList = List.of(
@@ -67,10 +67,10 @@ public class QueueControllerV1 implements QueueControllerSwagger {
         // ----------------------------------------------
 
         return new ResponseEntity<>(
-                ResDTO.<QueueGetListResDTOv1>builder()
+                ResDTO.<QueueGetTableResDTOv1>builder()
                         .code(HttpStatus.OK.value())
                         .message("대기 조회에 성공했습니다.")
-                        .data(QueueGetListResDTOv1.of(dummyQueueList))
+                        .data(QueueGetTableResDTOv1.of(dummyQueueList))
                         .build(),
                 HttpStatus.OK
         );
