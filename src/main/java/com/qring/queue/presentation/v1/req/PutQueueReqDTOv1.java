@@ -13,5 +13,6 @@ public class PutQueueReqDTOv1 {
     public static class Queue {
 
         private String status;
+
     }
 }

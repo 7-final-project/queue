@@ -11,6 +11,8 @@ public class PostQueueReqDTOv1 {
 
     @Getter
     public static class Queue {
+
         private Long reservationId;
+
     }
 }
