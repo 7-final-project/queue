@@ -37,6 +37,3 @@ out/
 .vscode/
 .DS_Store
 /src/main/resources/application-key.yml
-
-### key ###
-application-key.yml
