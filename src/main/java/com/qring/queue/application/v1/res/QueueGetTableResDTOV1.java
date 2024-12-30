@@ -34,8 +34,8 @@ public class QueueGetTableResDTOV1 {
         private int sequence;
         private String status;
 
-        public static QueueGetTableResDTOV1.Queue from(QueueEntity queueEntity) {
-            return QueueGetTableResDTOV1.Queue.builder()
+        public static Queue from(QueueEntity queueEntity) {
+            return Queue.builder()
                     .sequence(queueEntity.getSequence())
                     .status(queueEntity.getStatus().toString())
                     .build();
