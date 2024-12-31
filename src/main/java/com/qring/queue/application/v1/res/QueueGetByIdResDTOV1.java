@@ -32,7 +32,7 @@ public class QueueGetByIdResDTOV1 {
         public static Queue from(QueueEntity queueEntity) {
             return Queue.builder()
                     .sequence(queueEntity.getSequence())
-                    .status(queueEntity.getStatus().toString())
+                    .status(queueEntity.getStatus().getStatus())
                     .build();
         }
     }
