@@ -31,13 +31,13 @@ public class QueueGetTableResDTOV1 {
     @AllArgsConstructor
     public static class Queue {
 
-        private int sequence;
+        private int number;
         private String status;
 
         public static Queue from(QueueEntity queueEntity) {
             return Queue.builder()
-                    .sequence(queueEntity.getSequence())
-                    .status(queueEntity.getStatus().getStatus())
+                    .number(queueEntity.getNumber())
+                    .status(queueEntity.getStatus().getValue())
                     .build();
         }
     }
