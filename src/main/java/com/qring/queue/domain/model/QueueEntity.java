@@ -25,8 +25,8 @@ public class QueueEntity {
     @Column(name = "reservation_id", nullable = false)
     private Long reservationId;
 
-    @Column(name = "sequence", nullable = false)
-    private int sequence;
+    @Column(name = "number", nullable = false)
+    private int number;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -53,10 +53,10 @@ public class QueueEntity {
     private String deletedBy;
 
     @Builder
-    public QueueEntity(Long reservationId, int sequence, QueueStatus status,
+    public QueueEntity(Long reservationId, int number, QueueStatus status,
                        String createdBy, String modifiedBy) {
         this.reservationId = reservationId;
-        this.sequence = sequence;
+        this.number = number;
         this.status = status;
         this.createdBy = "tempUser";
         this.modifiedBy = "tempUser";
