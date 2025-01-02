@@ -11,7 +11,7 @@ public enum QueueStatus {
     WAITING(Status.WAITING),
     CANCELLED(Status.CANCELLED);
 
-    private final String status;
+    private final String value;
 
     public static class Status {
         public static final String SEATED = "입장";
