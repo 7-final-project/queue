@@ -25,11 +25,12 @@ public class QueueEntity {
     @Column(name = "reservation_id", nullable = false)
     private Long reservationId;
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "number", nullable = false)
     private int number;
 
-    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private QueueStatus status;
 
     @CreationTimestamp
@@ -53,12 +54,11 @@ public class QueueEntity {
     private String deletedBy;
 
     @Builder
-    public QueueEntity(Long reservationId, int number, QueueStatus status,
+    public QueueEntity(Long reservationId,
                        String createdBy, String modifiedBy) {
         this.id = reservationId;
         this.reservationId = reservationId;
-        this.number = number;
-        this.status = status;
+        this.status = QueueStatus.WAITING;
         this.createdBy = "tempUser";
         this.modifiedBy = "tempUser";
     }
