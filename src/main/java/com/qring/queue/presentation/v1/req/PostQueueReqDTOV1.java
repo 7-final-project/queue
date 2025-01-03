@@ -7,12 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostQueueReqDTOV1 {
 
-    private Queue queue;
-
-    @Getter
-    public static class Queue {
-
         private Long reservationId;
-
-    }
 }
