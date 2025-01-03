@@ -55,6 +55,7 @@ public class QueueEntity {
     @Builder
     public QueueEntity(Long reservationId, int number, QueueStatus status,
                        String createdBy, String modifiedBy) {
+        this.id = reservationId;
         this.reservationId = reservationId;
         this.number = number;
         this.status = status;
