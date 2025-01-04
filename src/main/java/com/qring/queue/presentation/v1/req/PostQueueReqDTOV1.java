@@ -8,4 +8,10 @@ import lombok.NoArgsConstructor;
 public class PostQueueReqDTOV1 {
 
         private Long reservationId;
+
+        public static PostQueueReqDTOV1 of(Long reservationId) {
+                PostQueueReqDTOV1 dto = new PostQueueReqDTOV1();
+                dto.reservationId = reservationId;
+                return dto;
+        }
 }
