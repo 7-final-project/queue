@@ -1,12 +1,12 @@
 package com.qring.queue.presentation.v1.controller;
 
+import com.qring.queue.application.global.dto.ResDTO;
 import com.qring.queue.application.v1.res.QueueGetByIdResDTOV1;
 import com.qring.queue.application.v1.res.QueueGetTableResDTOV1;
+import com.qring.queue.application.v1.res.QueueInfoDTO;
 import com.qring.queue.application.v1.res.QueuePostResDTOV1;
-import com.qring.queue.application.global.dto.ResDTO;
 import com.qring.queue.application.v1.service.QueueServiceV1;
 import com.qring.queue.domain.model.QueueEntity;
-import com.qring.queue.domain.model.constraint.QueueStatus;
 import com.qring.queue.infrastructure.docs.QueueControllerSwagger;
 import com.qring.queue.presentation.v1.req.PostQueueReqDTOV1;
 import com.qring.queue.presentation.v1.req.PutQueueReqDTOV1;
@@ -30,18 +30,19 @@ public class QueueControllerV1 implements QueueControllerSwagger {
         // 더미데이터 -> 추후 삭제 ---------------------------
         QueueEntity dummyQueueEntity = QueueEntity.builder()
                 .reservationId(57L)
-                .number(1)
-                .status(QueueStatus.valueOf("WAITING"))
                 .build();
-        int sequence = 1;
-        int total = 1;
+
+        QueueInfoDTO dummyQueueInfo = QueueInfoDTO.builder()
+                .sequence(1)
+                .total(1)
+                .build();
         // ----------------------------------------------
 
         return new ResponseEntity<>(
                 ResDTO.<QueuePostResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
                         .message("대기 등록에 성공했습니다.")
-                        .data(QueuePostResDTOV1.of(dummyQueueEntity, sequence, total))
+                        .data(queueService.postBy(dto))
                         .build(),
                 HttpStatus.CREATED
         );
@@ -55,18 +56,12 @@ public class QueueControllerV1 implements QueueControllerSwagger {
         List<QueueEntity> dummyQueueList = List.of(
                 QueueEntity.builder()
                         .reservationId(57L)
-                        .number(1)
-                        .status(QueueStatus.valueOf("WAITING"))
                         .build(),
                 QueueEntity.builder()
                         .reservationId(58L)
-                        .number(2)
-                        .status(QueueStatus.valueOf("WAITING"))
                         .build(),
                 QueueEntity.builder()
                         .reservationId(59L)
-                        .number(3)
-                        .status(QueueStatus.valueOf("WAITING"))
                         .build()
                 );
 
@@ -89,8 +84,6 @@ public class QueueControllerV1 implements QueueControllerSwagger {
         // 더미데이터 -> 추후 삭제 ---------------------------
         QueueEntity dummyQueueEntity = QueueEntity.builder()
                 .reservationId(57L)
-                .number(1)
-                .status(QueueStatus.valueOf("WAITING"))
                 .build();
         // ----------------------------------------------
 

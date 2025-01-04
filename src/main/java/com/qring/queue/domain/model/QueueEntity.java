@@ -17,7 +17,9 @@ import java.time.LocalDateTime;
 @Table(name = "p_queue")
 public class QueueEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "queue_seq")
+    @SequenceGenerator(name = "queue_seq", sequenceName = "queue_seq", allocationSize = 1)
     @Column(name = "queue_id", nullable = false)
     private Long id;
 
@@ -60,7 +62,8 @@ public class QueueEntity {
         this.modifiedBy = "tempUser";
     }
 
-    public void injectNumber(Long id) {
-       this.number = id;
+    @PostPersist
+    public void setNumberAfterPersist() {
+        this.number = this.id;
     }
 }
