@@ -31,7 +31,7 @@ public class QueueGetTableResDTOV1 {
     @AllArgsConstructor
     public static class Queue {
 
-        private int number;
+        private Long number;
         private String status;
 
         public static Queue from(QueueEntity queueEntity) {

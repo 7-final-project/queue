@@ -26,8 +26,8 @@ public class QueueGetByIdResDTOV1 {
     @AllArgsConstructor
     public static class Queue {
 
-        private int number;
         private String status;
+        private Long number;
 
         public static Queue from(QueueEntity queueEntity) {
             return Queue.builder()

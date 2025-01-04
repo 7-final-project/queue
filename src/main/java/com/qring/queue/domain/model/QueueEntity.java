@@ -1,7 +1,6 @@
 package com.qring.queue.domain.model;
 
 import com.qring.queue.domain.model.constraint.QueueStatus;
-import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,16 +17,15 @@ import java.time.LocalDateTime;
 @Table(name = "p_queue")
 public class QueueEntity {
 
-    @Id @Tsid
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "queue_id", nullable = false)
     private Long id;
 
     @Column(name = "reservation_id", nullable = false)
     private Long reservationId;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "number", nullable = false)
-    private int number;
+    @Column(name = "number")
+    private Long number;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -55,11 +53,14 @@ public class QueueEntity {
 
     @Builder
     public QueueEntity(Long reservationId,
-                       String createdBy, String modifiedBy) {
-        this.id = reservationId;
+                       Long userId) {
         this.reservationId = reservationId;
         this.status = QueueStatus.WAITING;
         this.createdBy = "tempUser";
         this.modifiedBy = "tempUser";
+    }
+
+    public void injectNumber(Long id) {
+       this.number = id;
     }
 }

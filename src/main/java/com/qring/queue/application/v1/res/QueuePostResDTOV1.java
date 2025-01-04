@@ -15,10 +15,10 @@ public class QueuePostResDTOV1 {
     private Queue queue;
     private QueueInfoDTO queueInfo;
 
-    public static QueuePostResDTOV1 of(QueueEntity queueEntity, int sequence, int total) {
+    public static QueuePostResDTOV1 of(QueueEntity queueEntity, QueueInfoDTO queueInfo) {
         return QueuePostResDTOV1.builder()
                 .queue(Queue.from(queueEntity))
-                .queueInfo(QueueInfoDTO.of(sequence, total))
+                .queueInfo(QueueInfoDTO.of(queueInfo.getSequence(), queueInfo.getTotal()))
                 .build();
     }
 
@@ -29,7 +29,7 @@ public class QueuePostResDTOV1 {
     public static class Queue {
 
         private String status;
-        private int number;
+        private Long number;
 
         public static Queue from(QueueEntity queueEntity) {
             return Queue.builder()
