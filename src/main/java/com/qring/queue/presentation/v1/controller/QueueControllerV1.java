@@ -3,7 +3,7 @@ package com.qring.queue.presentation.v1.controller;
 import com.qring.queue.application.global.dto.ResDTO;
 import com.qring.queue.application.v1.res.QueueGetByIdResDTOV1;
 import com.qring.queue.application.v1.res.QueueGetTableResDTOV1;
-import com.qring.queue.application.v1.res.QueueInfoDTO;
+import com.qring.queue.application.v1.res.QueueInfoDTOV1;
 import com.qring.queue.application.v1.res.QueuePostResDTOV1;
 import com.qring.queue.application.v1.service.QueueServiceV1;
 import com.qring.queue.domain.model.QueueEntity;
@@ -32,7 +32,7 @@ public class QueueControllerV1 implements QueueControllerSwagger {
                 .reservationId(57L)
                 .build();
 
-        QueueInfoDTO dummyQueueInfo = QueueInfoDTO.builder()
+        QueueInfoDTOV1 dummyQueueInfo = QueueInfoDTOV1.builder()
                 .sequence(1)
                 .total(1)
                 .build();
