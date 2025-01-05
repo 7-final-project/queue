@@ -1,4 +1,11 @@
 spring:
+  data:
+    redis:
+      host: ${REDIS_LOCAL_HOST_NAME}
+      port: ${REDIS_LOCAL_PORT}
+      username: ${REDIS_LOCAL_USERNAME}
+      password: ${REDIS_LOCAL_PASSWORD}
+
   datasource:
     url: ${DB_URL}
     username: ${DB_USER}
@@ -17,6 +24,16 @@ spring:
 
   config:
     import: classpath:application-key.yml
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: ${spring.application.name}-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
 
 eureka:
   client:

@@ -26,13 +26,13 @@ public class QueueGetByIdResDTOV1 {
     @AllArgsConstructor
     public static class Queue {
 
-        private int sequence;
         private String status;
+        private Long number;
 
         public static Queue from(QueueEntity queueEntity) {
             return Queue.builder()
-                    .sequence(queueEntity.getSequence())
-                    .status(queueEntity.getStatus().toString())
+                    .number(queueEntity.getNumber())
+                    .status(queueEntity.getStatus().getValue())
                     .build();
         }
     }

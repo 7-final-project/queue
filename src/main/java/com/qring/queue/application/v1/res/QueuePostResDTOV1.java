@@ -13,10 +13,12 @@ import lombok.NoArgsConstructor;
 public class QueuePostResDTOV1 {
 
     private Queue queue;
+    private QueueInfoDTO queueInfo;
 
-    public static QueuePostResDTOV1 of(QueueEntity queueEntity) {
+    public static QueuePostResDTOV1 of(QueueEntity queueEntity, QueueInfoDTO queueInfo) {
         return QueuePostResDTOV1.builder()
                 .queue(Queue.from(queueEntity))
+                .queueInfo(QueueInfoDTO.of(queueInfo.getSequence(), queueInfo.getTotal()))
                 .build();
     }
 
@@ -26,13 +28,13 @@ public class QueuePostResDTOV1 {
     @AllArgsConstructor
     public static class Queue {
 
-        private int sequence;
         private String status;
+        private Long number;
 
         public static Queue from(QueueEntity queueEntity) {
             return Queue.builder()
-                    .sequence(queueEntity.getSequence())
-                    .status(queueEntity.getStatus().toString())
+                    .number(queueEntity.getNumber())
+                    .status(queueEntity.getStatus().getValue())
                     .build();
         }
     }

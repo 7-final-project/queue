@@ -1,7 +1,6 @@
 package com.qring.queue.domain.model;
 
 import com.qring.queue.domain.model.constraint.QueueStatus;
-import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,18 +17,20 @@ import java.time.LocalDateTime;
 @Table(name = "p_queue")
 public class QueueEntity {
 
-    @Id @Tsid
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "queue_seq")
+    @SequenceGenerator(name = "queue_seq", sequenceName = "queue_seq", allocationSize = 1)
     @Column(name = "queue_id", nullable = false)
     private Long id;
 
     @Column(name = "reservation_id", nullable = false)
     private Long reservationId;
 
-    @Column(name = "sequence", nullable = false)
-    private int sequence;
+    @Column(name = "number")
+    private Long number;
 
-    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private QueueStatus status;
 
     @CreationTimestamp
@@ -53,12 +54,16 @@ public class QueueEntity {
     private String deletedBy;
 
     @Builder
-    public QueueEntity(Long reservationId, int sequence, QueueStatus status,
-                       String createdBy, String modifiedBy) {
+    public QueueEntity(Long reservationId,
+                       Long userId) {
         this.reservationId = reservationId;
-        this.sequence = sequence;
-        this.status = status;
+        this.status = QueueStatus.WAITING;
         this.createdBy = "tempUser";
         this.modifiedBy = "tempUser";
+    }
+
+    @PostPersist
+    public void setNumberAfterPersist() {
+        this.number = this.id;
     }
 }
