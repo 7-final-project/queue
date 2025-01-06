@@ -1,18 +1,17 @@
 package com.qring.queue.infrastructure.messaging.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qring.queue.application.v2.message.kafka.KafkaMessageConsumerV2;
 import com.qring.queue.application.v2.service.QueueServiceV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationCreateEventDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 @Slf4j(topic = "KafkaMessageConsumerV2 Log")
-public class KafkaMessageConsumerImplV2 implements KafkaMessageConsumerV2 {
+public class KafkaMessageConsumerV2 {
 
     private final QueueServiceV2 queueServiceV2;
 
