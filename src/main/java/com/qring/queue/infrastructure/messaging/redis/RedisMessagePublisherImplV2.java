@@ -49,7 +49,7 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
         }
 
         // 총 대기 인원 조회
-        int totalWaitingCount = Optional.ofNullable(zSetOps.zCard(WAITING_LIST_KEY_PREFIX))
+        int totalWaitingCount = Optional.ofNullable(zSetOps.zCard(key))
                 .orElse(0L) // 기본값 설정
                 .intValue();
 
@@ -70,6 +70,6 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
 
         String key = WAITING_LIST_KEY_PREFIX + restaurantId;
 
-        zSetOps.rank(key, String.valueOf(reservationId));
+        zSetOps.remove(key, String.valueOf(reservationId));
     }
 }
