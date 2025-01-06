@@ -39,8 +39,6 @@ public class QueueServiceV1 {
 
         queueEntity = queueRepository.save(queueEntity);
 
-
-
         return QueuePostResDTOV1.of(queueEntity, queueInfo);
     }
 
