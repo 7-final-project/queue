@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/queues")
+@RequestMapping("/v2/queues")
 public class QueueControllerV2 {
 
-    private final QueueServiceV2 queueService;
+    private final QueueServiceV2 queueServiceV2;
 
     @GetMapping
     public ResponseEntity<ResDTO<QueueGetResDTOV2>> getBy(@RequestParam Long restaurantId,
@@ -23,7 +23,7 @@ public class QueueControllerV2 {
                 ResDTO.<QueueGetResDTOV2>builder()
                         .code(HttpStatus.OK.value())
                         .message("대기 조회에 성공했습니다.")
-                        .data(queueService.getQueueInfoBy(restaurantId, reservationId))
+                        .data(queueServiceV2.getInfoByRestaurantIdAndReservationId(restaurantId, reservationId))
                         .build(),
                 HttpStatus.OK
         );

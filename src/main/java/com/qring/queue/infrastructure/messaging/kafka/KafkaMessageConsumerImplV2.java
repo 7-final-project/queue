@@ -22,7 +22,7 @@ public class KafkaMessageConsumerImplV2 implements KafkaMessageConsumerV2 {
         try {
             // 메시지에서 예약 ID와 식당 ID 추출
             ReservationCreateEventDTO event = parseMessage(message);
-            queueServiceV2.enrollWaitingListBy(event);
+            queueServiceV2.enrollWaitingListByEvent(event);
         } catch (Exception e) {
             log.error("메시지 추출 실패 : {}", message, e);
         }
