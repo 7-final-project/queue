@@ -7,4 +7,6 @@ public interface RedisMessagePublisherV2 {
     void addWaitingListByRestaurantIdAndReservationId(Long restaurantId, Long reservationId);
 
     QueueGetResDTOV2 getQueueInfoByRestaurantIdAndReservationId(Long restaurantId, Long reservationId);
+
+    void removeQueueByRestaurantIdAndReservationId(Long restaurantId, Long reservationId);
 }

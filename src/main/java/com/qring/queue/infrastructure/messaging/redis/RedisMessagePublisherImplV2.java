@@ -45,7 +45,7 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
         // 대기열에 사용자가 없을 경우 등록
         if (rank == -1) {
             addWaitingListByRestaurantIdAndReservationId(restaurantId, reservationId);
-            rank = getSeqBy(zSetOps, key, String.valueOf(reservationId));
+            rank = getRankByKeyAndValue(zSetOps, key, String.valueOf(reservationId));
         }
 
         // 총 대기 인원 조회
@@ -58,18 +58,18 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
     }
 
     // 사용자 순서 조회 반환
-    private int getSeqBy(ZSetOperations<String, Object> zSetOps, String key, String value) {
+    private int getRankByKeyAndValue(ZSetOperations<String, Object> zSetOps, String key, String value) {
         return Optional.ofNullable(zSetOps.rank(key, value))
                 .map(Long::intValue)
                 .orElse(-1);
     }
 
     // 대기열에서 제거
-    public void removeWaitingListBy(Long restaurantId, Long reservationId) {
+    public void removeQueueByRestaurantIdAndReservationId(Long restaurantId, Long reservationId) {
         ZSetOperations<String, Object> zSetOps = redisTemplate.opsForZSet();
 
         String key = WAITING_LIST_KEY_PREFIX + restaurantId;
 
-
+        zSetOps.rank(key, String.valueOf(reservationId));
     }
 }
