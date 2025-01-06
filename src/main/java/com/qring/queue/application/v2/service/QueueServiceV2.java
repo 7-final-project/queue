@@ -29,4 +29,10 @@ public class QueueServiceV2 {
 
         return redisMessagePublisherV2.getQueueInfoByRestaurantIdAndReservationId(restaurantId, reservationId);
     }
+
+    // 대기열에서 제거
+    public void removeQueueByRestaurantIdAndReservationId(Long restaurantId, Long reservationId) {
+
+        redisMessagePublisherV2.removeQueueByRestaurantIdAndReservationId(restaurantId, reservationId);
+    }
 }
