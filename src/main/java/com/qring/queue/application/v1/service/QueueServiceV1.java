@@ -2,7 +2,7 @@ package com.qring.queue.application.v1.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qring.queue.application.v1.res.QueueInfoDTO;
+import com.qring.queue.application.v1.res.QueueInfoDTOV1;
 import com.qring.queue.application.v1.res.QueuePostResDTOV1;
 import com.qring.queue.domain.model.QueueEntity;
 import com.qring.queue.infrastructure.repository.QueueRepository;
@@ -31,15 +31,13 @@ public class QueueServiceV1 {
     @Transactional
     public QueuePostResDTOV1 postBy(PostQueueReqDTOV1 dto) {
 
-        QueueInfoDTO queueInfo = getQueueInfoBy(String.valueOf(dto.getReservationId()));
+        QueueInfoDTOV1 queueInfo = getQueueInfoBy(String.valueOf(dto.getReservationId()));
 
         QueueEntity queueEntity = QueueEntity.builder()
                 .reservationId(dto.getReservationId())
                 .build();
 
         queueEntity = queueRepository.save(queueEntity);
-
-
 
         return QueuePostResDTOV1.of(queueEntity, queueInfo);
     }
@@ -79,7 +77,7 @@ public class QueueServiceV1 {
     }
 
     // 사용자 대기 순서와 총 대기 인원 반환
-    public QueueInfoDTO getQueueInfoBy(String reservationId) {
+    public QueueInfoDTOV1 getQueueInfoBy(String reservationId) {
         ZSetOperations<String, Object> zSetOps = redisTemplate.opsForZSet();
 
         // 사용자 대기 순서 조회
@@ -97,7 +95,7 @@ public class QueueServiceV1 {
                 .intValue();
 
         // 대기 순서는 Redis의 rank가 0부터 시작하므로 1을 더해 반환
-        return QueueInfoDTO.of(rank + 1, totalWaitingCount);
+        return QueueInfoDTOV1.of(rank + 1, totalWaitingCount);
     }
 
     // 대기열에 등록

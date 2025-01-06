@@ -1,4 +1,4 @@
-package com.qring.queue.application.v1.res;
+package com.qring.queue.application.v2.res;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueueInfoDTO {
+public class QueueGetResDTOV2 {
     private int sequence;
     private int total;
 
-    public static QueueInfoDTO of(int sequence, int total) {
-        return QueueInfoDTO.builder()
+    public static QueueGetResDTOV2 of(int sequence, int total) {
+        return QueueGetResDTOV2.builder()
                 .sequence(sequence)
                 .total(total)
                 .build();

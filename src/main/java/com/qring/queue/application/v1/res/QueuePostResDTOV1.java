@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 public class QueuePostResDTOV1 {
 
     private Queue queue;
-    private QueueInfoDTO queueInfo;
+    private QueueInfoDTOV1 queueInfo;
 
-    public static QueuePostResDTOV1 of(QueueEntity queueEntity, QueueInfoDTO queueInfo) {
+    public static QueuePostResDTOV1 of(QueueEntity queueEntity, QueueInfoDTOV1 queueInfo) {
         return QueuePostResDTOV1.builder()
                 .queue(Queue.from(queueEntity))
-                .queueInfo(QueueInfoDTO.of(queueInfo.getSequence(), queueInfo.getTotal()))
+                .queueInfo(QueueInfoDTOV1.of(queueInfo.getSequence(), queueInfo.getTotal()))
                 .build();
     }
 
