@@ -30,7 +30,7 @@ public class QueueControllerV2 implements QueueControllerSwagger {
         );
     }
 
-    @DeleteMapping
+    @PostMapping
     public ResponseEntity<ResDTO<Object>> removeBy(@RequestParam Long restaurantId,
                                                    @RequestParam Long reservationId) {
 
