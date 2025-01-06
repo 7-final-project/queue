@@ -15,25 +15,23 @@ public class QueueControllerV2 {
 
     private final QueueServiceV2 queueService;
 
-    @GetMapping("/{restaurantId}/{reservationId}")
-    public ResponseEntity<ResDTO<QueueGetResDTOV2>> getBy(@PathVariable Long restaurantId,
-                                                        @PathVariable Long reservationId) {
-
-        QueueGetResDTOV2 queueInfo = queueService.getQueueInfoBy(restaurantId, reservationId);
+    @GetMapping
+    public ResponseEntity<ResDTO<QueueGetResDTOV2>> getBy(@RequestParam Long restaurantId,
+                                                        @RequestParam Long reservationId) {
 
         return new ResponseEntity<>(
                 ResDTO.<QueueGetResDTOV2>builder()
                         .code(HttpStatus.OK.value())
                         .message("대기 조회에 성공했습니다.")
-                        .data(queueInfo)
+                        .data(queueService.getQueueInfoBy(restaurantId, reservationId))
                         .build(),
                 HttpStatus.OK
         );
     }
 
-    @DeleteMapping("/{restaurantId}/{reservationId}")
-    public ResponseEntity<ResDTO<Object>> cancelBy(@PathVariable Long restaurantId,
-                                                   @PathVariable Long reservationId) {
+    @DeleteMapping
+    public ResponseEntity<ResDTO<Object>> cancelBy(@RequestParam Long restaurantId,
+                                                   @RequestParam Long reservationId) {
 
         return new ResponseEntity<>(
                 ResDTO.builder()
