@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -18,6 +18,7 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
     private final RedisTemplate<String, Object> redisTemplate;
 
     private static final String WAITING_LIST_KEY_PREFIX = "waiting_list";
+    private static final String LAST_SENT_KEY_PREFIX = "last_sent_event:";
 
     // 대기열에 등록
     public void addWaitingListByRestaurantIdAndReservationId(Long restaurantId, Long reservationId) {
@@ -42,11 +43,13 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
                 .map(Long::intValue)
                 .orElseThrow(() -> new IllegalArgumentException("대기열에 존재하지 않거나 이미 삭제되었습니다."));
 
+        // ========== 추후 미루기 기능에 사용될 것 같아 삭제하지 않고 주석 처리 ===========
 //        // 대기열에 사용자가 없을 경우 등록
 //        if (rank == -1) {
 //            addWaitingListByRestaurantIdAndReservationId(restaurantId, reservationId);
 //            rank = getRankByKeyAndValue(zSetOps, key, String.valueOf(reservationId));
 //        }
+        // ===================================================================
 
         // 총 대기 인원 조회
         int totalWaitingCount = Optional.ofNullable(zSetOps.zCard(key))
@@ -72,4 +75,23 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
 
         zSetOps.remove(key, String.valueOf(reservationId));
     }
+
+    // ============ 대기 순번 알림 발송 관련 ================
+    // 대기열 정보 전체 가져오기
+    public Set<Object> getFromWaitingList(String key) {
+        ZSetOperations<String, Object> zSetOps = redisTemplate.opsForZSet();
+        return zSetOps.range(key, 0, -1); // ZSet의 모든 데이터를 가져옴
+    }
+    // 마지막 발송 ID 조회
+    public String getLastSentId(Long restaurantId) {
+        String key = LAST_SENT_KEY_PREFIX + restaurantId;
+        return (String) redisTemplate.opsForValue().get(key);
+    }
+
+    // 마지막 발송 ID 저장
+    public void saveLastSentId(Long restaurantId, String reservationId) {
+        String key = LAST_SENT_KEY_PREFIX + restaurantId;
+        redisTemplate.opsForValue().set(key, reservationId);
+    }
+
 }
