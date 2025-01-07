@@ -40,13 +40,13 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
         // 사용자 대기 순서 조회
         int rank = Optional.ofNullable(zSetOps.rank(key, String.valueOf(reservationId)))
                 .map(Long::intValue)
-                .orElse(-1);
+                .orElseThrow(() -> new IllegalArgumentException("대기열에 존재하지 않거나 이미 삭제되었습니다."));
 
-        // 대기열에 사용자가 없을 경우 등록
-        if (rank == -1) {
-            addWaitingListByRestaurantIdAndReservationId(restaurantId, reservationId);
-            rank = getRankByKeyAndValue(zSetOps, key, String.valueOf(reservationId));
-        }
+//        // 대기열에 사용자가 없을 경우 등록
+//        if (rank == -1) {
+//            addWaitingListByRestaurantIdAndReservationId(restaurantId, reservationId);
+//            rank = getRankByKeyAndValue(zSetOps, key, String.valueOf(reservationId));
+//        }
 
         // 총 대기 인원 조회
         int totalWaitingCount = Optional.ofNullable(zSetOps.zCard(key))
