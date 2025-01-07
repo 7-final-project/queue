@@ -31,7 +31,7 @@ public class QueueServiceV2 {
     }
 
     // 대기열에서 제거
-    public void removeBy(Long restaurantId, Long reservationId) {
+    public void deleteBy(Long restaurantId, Long reservationId) {
 
         redisMessagePublisherV2.removeQueueByRestaurantIdAndReservationId(restaurantId, reservationId);
     }
