@@ -24,7 +24,7 @@ public class QueueControllerV2 implements QueueControllerSwagger {
                 ResDTO.<QueueGetResDTOV2>builder()
                         .code(HttpStatus.OK.value())
                         .message("대기 조회에 성공했습니다.")
-                        .data(queueServiceV2.getInfoByRestaurantIdAndReservationId(restaurantId, reservationId))
+                        .data(queueServiceV2.getBy(restaurantId, reservationId))
                         .build(),
                 HttpStatus.OK
         );
@@ -34,7 +34,7 @@ public class QueueControllerV2 implements QueueControllerSwagger {
     public ResponseEntity<ResDTO<Object>> removeBy(@RequestParam Long restaurantId,
                                                    @RequestParam Long reservationId) {
 
-        queueServiceV2.removeQueueByRestaurantIdAndReservationId(restaurantId, reservationId);
+        queueServiceV2.removeBy(restaurantId, reservationId);
 
         return new ResponseEntity<>(
                 ResDTO.builder()
