@@ -42,7 +42,7 @@ public class QueueServiceV1 {
         return QueuePostResDTOV1.of(queueEntity, queueInfo);
     }
 
-    @KafkaListener(topics = "reservation-create-event-topic", groupId = "${spring.kafka.consumer.group-id}")
+//    @KafkaListener(topics = "reservation-create-event-topic", groupId = "${spring.kafka.consumer.group-id}")
     public void handleMessage(String message) {
         try {
             // 메시지에서 예약 ID를 추출하고 DTO로 변환

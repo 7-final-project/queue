@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/queues")
-public class QueueControllerV1 implements QueueControllerSwagger {
+public class QueueControllerV1 {
 
     private final QueueServiceV1 queueService;
 

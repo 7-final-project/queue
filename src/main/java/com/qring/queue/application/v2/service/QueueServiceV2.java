@@ -25,8 +25,14 @@ public class QueueServiceV2 {
     }
 
     // 사용자 대기 순서와 총 대기 인원 반환
-    public QueueGetResDTOV2 getInfoByRestaurantIdAndReservationId(Long restaurantId, Long reservationId) {
+    public QueueGetResDTOV2 getBy(Long restaurantId, Long reservationId) {
 
         return redisMessagePublisherV2.getQueueInfoByRestaurantIdAndReservationId(restaurantId, reservationId);
+    }
+
+    // 대기열에서 제거
+    public void removeBy(Long restaurantId, Long reservationId) {
+
+        redisMessagePublisherV2.removeQueueByRestaurantIdAndReservationId(restaurantId, reservationId);
     }
 }
