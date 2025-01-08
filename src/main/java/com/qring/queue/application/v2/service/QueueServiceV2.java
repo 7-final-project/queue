@@ -40,9 +40,9 @@ public class QueueServiceV2 {
 
     // ============== 대기 순번 알림 발송 관련 ================
     // 식당별 대기열 리스트 조회
-    public List<Long> getWaitingListBy(Long restaurantId) {
+    public List<Long> getWaitingListByRestaurantId(Long restaurantId) {
         String key = "waiting_list" + restaurantId; // Redis Key 생성
-        Set<Object> waitingList = redisMessagePublisherV2.getFromWaitingList(key); // Redis에서 모든 데이터 조회
+        Set<Object> waitingList = redisMessagePublisherV2.getFromWaitingListByKey(key); // Redis에서 모든 데이터 조회
         if (waitingList.isEmpty()) {
             log.info("대기열이 비어있습니다.");
             return Collections.emptyList();

@@ -12,10 +12,10 @@ public interface RedisMessagePublisherV2 {
 
     void removeQueueByRestaurantIdAndReservationId(Long restaurantId, Long reservationId);
 
-    Set<Object> getFromWaitingList(String key);
+    Set<Object> getFromWaitingListByKey(String key);
 
-    String getLastSentId(Long restaurantId);
+    String getLastSentIdByRestaurantId(Long restaurantId);
 
-    void saveLastSentId(Long restaurantId, String reservationId);
+    void saveLastSentIdByRestaurantIdAndReservationId(Long restaurantId, String reservationId);
 
 }
