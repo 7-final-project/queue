@@ -1,5 +1,6 @@
 package com.qring.queue.infrastructure.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.MessageListener;
@@ -9,12 +10,9 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.Topic;
 
 @Configuration
+@RequiredArgsConstructor
 public class RedisListenerConfig {
     private final RedisConnectionFactory redisConnectionFactory;
-
-    public RedisListenerConfig(RedisConnectionFactory redisConnectionFactory) {
-        this.redisConnectionFactory = redisConnectionFactory;
-    }
 
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(MessageListener redisKeyspaceListener) {
