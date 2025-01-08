@@ -11,23 +11,60 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReservationEventDTOV2 {
 
-    private Long reservationId;
-    private Long restaurantId;
-    private String restaurantName;
-    private String restaurantTel;
-    private Long userId;
-    private String slackEmail;
-    private int headCount;
+    private UserInfo userInfo;
+    private RestaurantInfo restaurantInfo;
+    private ReservationInfo reservationInfo;
 
-    public static ReservationEventDTOV2 from(ReservationAndQueueEventDTOV2 dto) {
-        return ReservationEventDTOV2.builder()
-                .reservationId(dto.getReservationId())
-                .restaurantId(dto.getRestaurantId())
-                .restaurantName(dto.getRestaurantName())
-                .restaurantTel(dto.getRestaurantTel())
-                .userId(dto.getUserId())
-                .slackEmail(dto.getSlackEmail())
-                .headCount(dto.getHeadCount())
-                .build();
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserInfo {
+
+        private Long userId;
+        private String slackEmail;
+
+        public static UserInfo from(Long userId, String slackEmail) {
+            return UserInfo.builder()
+                    .userId(userId)
+                    .slackEmail(slackEmail)
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RestaurantInfo {
+
+        private String restaurantName;
+        private String restaurantTel;
+
+        public static RestaurantInfo from(String restaurantName, String restaurantTel) {
+            return RestaurantInfo.builder()
+                    .restaurantName(restaurantName)
+                    .restaurantTel(restaurantTel)
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReservationInfo {
+
+        private Long id;
+        private Long restaurantId;
+        private int headCount;
+
+        public static ReservationInfo from(Long id, Long restaurantId, int headCount) {
+            return ReservationInfo.builder()
+                    .id(id)
+                    .restaurantId(restaurantId)
+                    .headCount(headCount)
+                    .build();
+        }
     }
 }
