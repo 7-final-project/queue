@@ -33,6 +33,6 @@ public interface QueueControllerSwagger {
             @ApiResponse(responseCode = "400", description = "대기 취소 실패", content = @Content(schema = @Schema(implementation = ResDTO.class))),
     })
     @DeleteMapping
-    ResponseEntity<ResDTO<Object>> removeBy(@RequestParam Long restaurantId,
+    ResponseEntity<ResDTO<Object>> deleteBy(@RequestParam Long restaurantId,
                                             @RequestParam Long reservationId);
 }
