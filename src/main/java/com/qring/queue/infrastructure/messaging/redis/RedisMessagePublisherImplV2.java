@@ -57,8 +57,13 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
                 .orElse(0L) // 기본값 설정
                 .intValue();
 
+        QueueGetResDTOV2.QueueInfo queueInfo = QueueGetResDTOV2.QueueInfo.from(
+                rank + 1,
+                totalWaitingCount);
+
+
         // 대기 순서는 Redis의 rank가 0부터 시작하므로 1을 더해 반환
-        return QueueGetResDTOV2.of(rank + 1, totalWaitingCount);
+        return QueueGetResDTOV2.of(queueInfo);
     }
 
     // 사용자 순서 조회 반환
