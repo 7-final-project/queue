@@ -20,10 +20,13 @@ public class QueueServiceV2 {
     public void enrollWaitingListByEvent(ReservationEventDTOV2 event) {
 
         // Redis에 예약 정보 저장
-        redisMessagePublisherV2.addWaitingListByRestaurantIdAndReservationId(event.getRestaurantId(), event.getReservationId());
+        redisMessagePublisherV2.addWaitingListByRestaurantIdAndReservationId(
+                event.getReservationInfo().getRestaurantId(),
+                event.getReservationInfo().getId());
 
         log.info("대기열 등록 성공 : Restaurant ID = {}, Reservation ID = {}",
-                event.getRestaurantId(), event.getReservationId());
+                event.getReservationInfo().getRestaurantId(),
+                event.getReservationInfo().getId());
     }
 
     // 사용자 대기 순서와 총 대기 인원 반환
