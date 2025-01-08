@@ -2,6 +2,8 @@ package com.qring.queue.application.v1.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qring.queue.application.global.exception.ErrorCode;
+import com.qring.queue.application.global.exception.QueueException;
 import com.qring.queue.application.v1.res.QueueInfoDTOV1;
 import com.qring.queue.application.v1.res.QueuePostResDTOV1;
 import com.qring.queue.domain.model.QueueEntity;
@@ -11,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +56,7 @@ public class QueueServiceV1 {
             System.out.println("Queue registered: " + response.getQueueInfo().getSequence());
         } catch (Exception e) {
             log.error("메세지 추출에 실패하였습니다. : {}", message, e);
+            throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "메세지 추출에 실패하였습니다.");
         }
     }
 
@@ -72,43 +74,60 @@ public class QueueServiceV1 {
             JsonNode jsonNode = objectMapper.readTree(message);
             return jsonNode.get("reservationId").asLong();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid message format: " + message, e);
+            log.error("예약 ID 추출에 실패하였습니다. : {}", message, e);
+            throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "예약 ID 추출에 실패하였습니다.");
         }
     }
 
     // 사용자 대기 순서와 총 대기 인원 반환
     public QueueInfoDTOV1 getQueueInfoBy(String reservationId) {
-        ZSetOperations<String, Object> zSetOps = redisTemplate.opsForZSet();
+        try {
+            ZSetOperations<String, Object> zSetOps = redisTemplate.opsForZSet();
 
-        // 사용자 대기 순서 조회
-        int rank = getSeqBy(zSetOps, WAITING_LIST_KEY, reservationId);
+            // 사용자 대기 순서 조회
+            int rank = getSeqBy(zSetOps, WAITING_LIST_KEY, reservationId);
 
-        // 대기열에 사용자가 없을 경우 등록
-        if (rank == -1) {
-            addWaitingListBy(reservationId);
-            rank = getSeqBy(zSetOps, WAITING_LIST_KEY, reservationId);
+            // 대기열에 사용자가 없을 경우 등록
+            if (rank == -1) {
+                addWaitingListBy(reservationId);
+                rank = getSeqBy(zSetOps, WAITING_LIST_KEY, reservationId);
+            }
+
+            // 총 대기 인원 조회
+            int totalWaitingCount = Optional.ofNullable(zSetOps.zCard(WAITING_LIST_KEY))
+                    .orElse(0L) // 기본값 설정
+                    .intValue();
+
+            // 대기 순서는 Redis의 rank가 0부터 시작하므로 1을 더해 반환
+            return QueueInfoDTOV1.of(rank + 1, totalWaitingCount);
+        } catch (Exception e) {
+            log.error("Redis에서 대기열 정보를 조회에 실패했습니다: {}", reservationId, e);
+            throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "대기열 조회에 실패했습니다.");
         }
-
-        // 총 대기 인원 조회
-        int totalWaitingCount = Optional.ofNullable(zSetOps.zCard(WAITING_LIST_KEY))
-                .orElse(0L) // 기본값 설정
-                .intValue();
-
-        // 대기 순서는 Redis의 rank가 0부터 시작하므로 1을 더해 반환
-        return QueueInfoDTOV1.of(rank + 1, totalWaitingCount);
     }
 
     // 대기열에 등록
     private void addWaitingListBy(String reservationId) {
-        ZSetOperations<String, Object> zSetOps = redisTemplate.opsForZSet();
-        long score = System.currentTimeMillis(); // 대기 순서를 보장하기 위해 timestamp 사용
-        zSetOps.add(WAITING_LIST_KEY, reservationId, score);
+        try {
+            ZSetOperations<String, Object> zSetOps = redisTemplate.opsForZSet();
+            long score = System.currentTimeMillis(); // 대기 순서를 보장하기 위해 timestamp 사용
+            zSetOps.add(WAITING_LIST_KEY, reservationId, score);
+        } catch (Exception e) {
+            log.error("Redis에 대기열을 추가에 실패했습니다: {}", reservationId, e);
+            throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "대기열 추가에 실패했습니다.");
+        }
+
     }
 
     // 사용자 순서 조회 반환
     private int getSeqBy(ZSetOperations<String, Object> zSetOps, String key, String value) {
-        return Optional.ofNullable(zSetOps.rank(key, value))
-                .map(Long::intValue)
-                .orElse(-1);
+        try {
+            return Optional.ofNullable(zSetOps.rank(key, value))
+                    .map(Long::intValue)
+                    .orElse(-1);
+        } catch (Exception e) {
+            log.error("Redis에서 고객 대기 순서 조회에 실패했습니다: {}", value, e);
+            throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "고객 대기 순서 조회에 실패했습니다.");
+        }
     }
 }

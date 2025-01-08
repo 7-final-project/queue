@@ -1,5 +1,7 @@
 package com.qring.queue.infrastructure.messaging.kafka;
 
+import com.qring.queue.application.global.exception.ErrorCode;
+import com.qring.queue.application.global.exception.QueueException;
 import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
 import com.qring.queue.application.v2.res.QueueGetResDTOV2;
 import com.qring.queue.application.v2.service.QueueServiceV2;
@@ -38,6 +40,7 @@ public class KafkaMessageConsumerV2 {
             kafkaMessageProducerV2.publishReservationAndQueueEvent(event);
         } catch (Exception e) {
             log.error("메시지 추출 실패 : {}", message, e);
+            throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "메세지 추출에 실패하였습니다.");
         }
     }
 }
