@@ -17,4 +17,5 @@ public interface RedisMessagePublisherV2 {
     String getLastSentId(Long restaurantId);
 
     void saveLastSentId(Long restaurantId, String reservationId);
+
 }

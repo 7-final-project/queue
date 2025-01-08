@@ -1,13 +1,11 @@
 package com.qring.queue.application.v2.message.redis;
 
+import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
 import com.qring.queue.application.v2.service.QueueServiceV2;
-import com.qring.queue.infrastructure.messaging.dto.QueueAlarmEventDTO;
-import com.qring.queue.infrastructure.messaging.redis.RedisMessagePublisherImplV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,8 +16,8 @@ import java.util.List;
 public class RedisKeyspaceListener implements MessageListener {
 
     private final QueueServiceV2 queueService;
-    private final KafkaTemplate<String, Object> kafkaTemplate;
-    private final RedisMessagePublisherImplV2 redisMessagePublisherV2;
+    private final KafkaMessageProducerV2 kafkaMessageProducerV2;
+    private final RedisMessagePublisherV2 redisMessagePublisherV2;
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
@@ -67,8 +65,7 @@ public class RedisKeyspaceListener implements MessageListener {
     }
 
     private void sendQueueAlarmEvent(Long reservationId) {
-        QueueAlarmEventDTO event = new QueueAlarmEventDTO(reservationId);
-        kafkaTemplate.send("queue-alarm-event-topic", event);
+        kafkaMessageProducerV2.publishQueueAlarmEvent(reservationId);
         log.info("Kafka 메시지 발행: {}", reservationId);
     }
 
