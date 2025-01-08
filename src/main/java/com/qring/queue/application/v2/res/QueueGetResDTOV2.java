@@ -23,7 +23,7 @@ public class QueueGetResDTOV2 {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public class QueueInfo {
+    public static class QueueInfo {
         private int sequence;
         private int total;
 
