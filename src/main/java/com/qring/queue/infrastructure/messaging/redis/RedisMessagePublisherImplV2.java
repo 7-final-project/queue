@@ -52,14 +52,9 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
 //        }
         // ===================================================================
 
-        // 총 대기 인원 조회
-        int totalWaitingCount = Optional.ofNullable(zSetOps.zCard(key))
-                .orElse(0L) // 기본값 설정
-                .intValue();
-
         QueueGetResDTOV2.QueueInfo queueInfo = QueueGetResDTOV2.QueueInfo.from(
                 rank + 1,
-                totalWaitingCount);
+                rank);
 
 
         // 대기 순서는 Redis의 rank가 0부터 시작하므로 1을 더해 반환

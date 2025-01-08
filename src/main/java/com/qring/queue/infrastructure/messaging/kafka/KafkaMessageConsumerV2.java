@@ -28,17 +28,11 @@ public class KafkaMessageConsumerV2 {
                     .getQueueInfo();
 
             // 새로운 대기 정보를 포함한 DTO 생성
-            ReservationAndQueueEventDTOV2 event = ReservationAndQueueEventDTOV2.builder()
-                    .reservationId(message.getReservationId())
-                    .restaurantId(message.getRestaurantId())
-                    .restaurantName(message.getRestaurantName())
-                    .restaurantTel(message.getRestaurantTel())
-                    .userId(message.getUserId())
-                    .slackEmail(message.getSlackEmail())
-                    .headCount(message.getHeadCount())
-                    .waitingNumber(dto.getSequence())
-                    .teamsAhead(dto.getTotal())
-                    .build();
+            ReservationAndQueueEventDTOV2 event = ReservationAndQueueEventDTOV2.from(
+                    message,
+                    dto.getSequence(),
+                    dto.getTeamsAhead()
+                    );
 
             // 메시지 서비스로 전송
             kafkaMessageProducerV2.publishReservationAndQueueEvent(event);

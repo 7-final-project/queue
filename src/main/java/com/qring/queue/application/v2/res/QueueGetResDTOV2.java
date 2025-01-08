@@ -25,16 +25,13 @@ public class QueueGetResDTOV2 {
     @AllArgsConstructor
     public static class QueueInfo {
         private int sequence;
-        private int total;
+        private int teamsAhead;
 
-        public static QueueInfo from(int sequence, int total) {
+        public static QueueInfo from(int sequence, int teamsAhead) {
             return QueueInfo.builder()
                     .sequence(sequence)
-                    .total(total)
+                    .teamsAhead(teamsAhead)
                     .build();
         }
     }
-
-
-
 }
