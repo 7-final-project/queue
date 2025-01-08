@@ -41,6 +41,8 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
         // 식당 Id 에 해당하는 Key 생성
         String key = WAITING_LIST_KEY_PREFIX + restaurantId;
 
+        log.info("Redis 조회 시도: restaurantId={}, reservationId={}", restaurantId, reservationId);
+
         // 사용자 대기 순서 조회
         int rank = Optional.ofNullable(zSetOps.rank(key, String.valueOf(reservationId)))
                 .map(Long::intValue)
@@ -96,5 +98,4 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
         String key = LAST_SENT_KEY_PREFIX + restaurantId;
         redisTemplate.opsForValue().set(key, reservationId);
     }
-
 }
