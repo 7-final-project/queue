@@ -1,0 +1,37 @@
+package com.qring.queue.infrastructure.messaging.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ReservationAndQueueEventDTOV2 {
+
+    private Long reservationId;     // 예약 ID
+    private Long restaurantId;      // 레스토랑 ID
+    private String restaurantName;  // 레스토랑 이름
+    private String restaurantTel;   // 레스토랑 전화번호
+    private Long userId;            // 사용자 ID
+    private String slackEmail;      // 사용자의 슬랙 이메일
+    private int headCount;          // 예약 인원수
+    private int waitingNumber;      // 대기 번호
+    private int teamsAhead;         // 내 앞에 대기 중인 팀 수
+
+    public static ReservationAndQueueEventDTOV2 from(ReservationEventDTOV2 event, int waitingNumber, int teamsAhead) {
+        return ReservationAndQueueEventDTOV2.builder()
+                .reservationId(event.getReservationId())
+                .restaurantId(event.getRestaurantId())
+                .restaurantName(event.getRestaurantName())
+                .restaurantTel(event.getRestaurantTel())
+                .userId(event.getUserId())
+                .slackEmail(event.getSlackEmail())
+                .headCount(event.getHeadCount())
+                .waitingNumber(waitingNumber)
+                .teamsAhead(teamsAhead)
+                .build();
+    }
+}
