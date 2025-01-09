@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class QueueAlarmEventDTO {
+public class QueueAlarmEventDTOV2 {
     private Long reservationId;
 }

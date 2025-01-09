@@ -52,13 +52,13 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
 //        }
         // ===================================================================
 
-        // 총 대기 인원 조회
-        int totalWaitingCount = Optional.ofNullable(zSetOps.zCard(key))
-                .orElse(0L) // 기본값 설정
-                .intValue();
+        QueueGetResDTOV2.QueueInfo queueInfo = QueueGetResDTOV2.QueueInfo.from(
+                rank + 1,
+                rank);
+
 
         // 대기 순서는 Redis의 rank가 0부터 시작하므로 1을 더해 반환
-        return QueueGetResDTOV2.of(rank + 1, totalWaitingCount);
+        return QueueGetResDTOV2.of(queueInfo);
     }
 
     // 사용자 순서 조회 반환
@@ -79,18 +79,18 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
 
     // ============ 대기 순번 알림 발송 관련 ================
     // 대기열 정보 전체 가져오기
-    public Set<Object> getFromWaitingList(String key) {
+    public Set<Object> getFromWaitingListByKey(String key) {
         ZSetOperations<String, Object> zSetOps = redisTemplate.opsForZSet();
         return zSetOps.range(key, 0, -1); // ZSet의 모든 데이터를 가져옴
     }
     // 마지막 발송 ID 조회
-    public String getLastSentId(Long restaurantId) {
+    public String getLastSentIdByRestaurantId(Long restaurantId) {
         String key = LAST_SENT_KEY_PREFIX + restaurantId;
         return (String) redisTemplate.opsForValue().get(key);
     }
 
     // 마지막 발송 ID 저장
-    public void saveLastSentId(Long restaurantId, String reservationId) {
+    public void saveLastSentIdByRestaurantIdAndReservationId(Long restaurantId, String reservationId) {
         String key = LAST_SENT_KEY_PREFIX + restaurantId;
         redisTemplate.opsForValue().set(key, reservationId);
     }

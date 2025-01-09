@@ -45,18 +45,18 @@ public class RedisKeyspaceListener implements MessageListener {
     }
 
     private void processFifthReservationEvent(Long restaurantId) {
-        List<Long> waitingList = queueService.getWaitingListBy(restaurantId);
+        List<Long> waitingList = queueService.getWaitingListByRestaurantId(restaurantId);
         if (waitingList.size() >= 5) {
             Long fifthReservationId = waitingList.get(4); // 5번째 예약 ID
             // Redis에서 마지막 발송된 ID 확인
-            String lastSentId = redisMessagePublisherV2.getLastSentId(restaurantId);
+            String lastSentId = redisMessagePublisherV2.getLastSentIdByRestaurantId(restaurantId);
 
             // 5번째 ID가 이전에 발송된 ID와 다를 경우에만 이벤트 발송
             if (!fifthReservationId.toString().equals(lastSentId)) {
                 sendQueueAlarmEvent(fifthReservationId); // Kafka 이벤트 발송
 
                 // Redis에 발송된 ID 저장
-                redisMessagePublisherV2.saveLastSentId(restaurantId, String.valueOf(fifthReservationId));
+                redisMessagePublisherV2.saveLastSentIdByRestaurantIdAndReservationId(restaurantId, String.valueOf(fifthReservationId));
                 log.info("Kafka 5번째 순번 예약 ID 이벤트 발송: 식당 ID = {}, 예약 ID = {}", restaurantId, fifthReservationId);
             } else {
                 log.info("Redis 중복 이벤트 방지: 식당 ID = {}, 예약 ID = {}", restaurantId, fifthReservationId);
