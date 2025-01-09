@@ -11,22 +11,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReservationCreationEventDTOV2 {
 
-    private UserInfo userInfo;
-    private RestaurantInfo restaurantInfo;
-    private ReservationInfo reservationInfo;
+    private User user;
+    private Restaurant restaurant;
+    private Reservation reservation;
 
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserInfo {
+    public static class User {
 
         private Long userId;
         private String slackEmail;
         private String username;
 
-        public static UserInfo from(Long userId, String slackEmail, String username) {
-            return UserInfo.builder()
+        public static User from(Long userId, String slackEmail, String username) {
+            return User.builder()
                     .userId(userId)
                     .slackEmail(slackEmail)
                     .username(username)
@@ -38,13 +38,13 @@ public class ReservationCreationEventDTOV2 {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class RestaurantInfo {
+    public static class Restaurant {
 
         private String restaurantName;
         private String restaurantTel;
 
-        public static RestaurantInfo from(String restaurantName, String restaurantTel) {
-            return RestaurantInfo.builder()
+        public static Restaurant from(String restaurantName, String restaurantTel) {
+            return Restaurant.builder()
                     .restaurantName(restaurantName)
                     .restaurantTel(restaurantTel)
                     .build();
@@ -55,14 +55,14 @@ public class ReservationCreationEventDTOV2 {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ReservationInfo {
+    public static class Reservation {
 
         private Long id;
         private Long restaurantId;
         private int headCount;
 
-        public static ReservationInfo from(Long id, Long restaurantId, int headCount) {
-            return ReservationInfo.builder()
+        public static Reservation from(Long id, Long restaurantId, int headCount) {
+            return Reservation.builder()
                     .id(id)
                     .restaurantId(restaurantId)
                     .headCount(headCount)

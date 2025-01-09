@@ -21,12 +21,12 @@ public class QueueServiceV2 {
 
         // Redis에 예약 정보 저장
         redisMessagePublisherV2.addWaitingListByRestaurantIdAndReservationId(
-                event.getReservationInfo().getRestaurantId(),
-                event.getReservationInfo().getId());
+                event.getReservation().getRestaurantId(),
+                event.getReservation().getId());
 
         log.info("대기열 등록 성공 : Restaurant ID = {}, Reservation ID = {}",
-                event.getReservationInfo().getRestaurantId(),
-                event.getReservationInfo().getId());
+                event.getReservation().getRestaurantId(),
+                event.getReservation().getId());
     }
 
     // 사용자 대기 순서 반환
