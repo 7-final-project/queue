@@ -35,8 +35,8 @@ public class KafkaMessageConsumerV2 {
             queueServiceV2.enrollWaitingListByEvent(parsedMessage);
 
             QueueGetResDTOV2.QueueInfo dto = queueServiceV2.getBy(
-                            parsedMessage.getReservationInfo().getRestaurantId(),
-                            parsedMessage.getReservationInfo().getId())
+                            parsedMessage.getReservation().getRestaurantId(),
+                            parsedMessage.getReservation().getId())
                             .getQueueInfo();
 
             // 새로운 대기 정보를 포함한 DTO 생성

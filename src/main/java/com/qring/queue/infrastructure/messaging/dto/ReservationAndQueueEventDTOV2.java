@@ -23,13 +23,13 @@ public class ReservationAndQueueEventDTOV2 {
 
     public static ReservationAndQueueEventDTOV2 from(ReservationCreationEventDTOV2 event, int sequence) {
         return ReservationAndQueueEventDTOV2.builder()
-                .reservationId(event.getReservationInfo().getId())
-                .restaurantId(event.getReservationInfo().getRestaurantId())
-                .restaurantName(event.getRestaurantInfo().getRestaurantName())
-                .restaurantTel(event.getRestaurantInfo().getRestaurantTel())
-                .userId(event.getUserInfo().getUserId())
-                .slackEmail(event.getUserInfo().getSlackEmail())
-                .headCount(event.getReservationInfo().getHeadCount())
+                .reservationId(event.getReservation().getId())
+                .restaurantId(event.getReservation().getRestaurantId())
+                .restaurantName(event.getRestaurant().getRestaurantName())
+                .restaurantTel(event.getRestaurant().getRestaurantTel())
+                .userId(event.getUser().getUserId())
+                .slackEmail(event.getUser().getSlackEmail())
+                .headCount(event.getReservation().getHeadCount())
                 .sequence(sequence)
                 .build();
     }
