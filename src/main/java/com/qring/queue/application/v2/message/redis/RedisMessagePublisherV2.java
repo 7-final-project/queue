@@ -14,8 +14,4 @@ public interface RedisMessagePublisherV2 {
 
     Set<Object> getFromWaitingListByKey(String key);
 
-    String getLastSentIdByRestaurantId(Long restaurantId);
-
-    void saveLastSentIdByRestaurantIdAndReservationId(Long restaurantId, String reservationId);
-
 }
