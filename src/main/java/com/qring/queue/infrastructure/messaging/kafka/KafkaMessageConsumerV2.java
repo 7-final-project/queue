@@ -7,8 +7,8 @@ import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
 import com.qring.queue.application.v2.res.QueueGetResDTOV2;
 import com.qring.queue.application.v2.service.QueueServiceV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationAndQueueEventDTOV2;
-import com.qring.queue.infrastructure.messaging.dto.ReservationCreateEventDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationEventDTOV2;
+import com.qring.queue.infrastructure.messaging.dto.ReservationCreationEventDTOV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "KafkaMessageConsumerV2 Log")
+@Slf4j(topic = "QueueService - KafkaMessageConsumerV2 Log")
 public class KafkaMessageConsumerV2 {
 
     private final QueueServiceV2 queueServiceV2;
@@ -30,7 +30,7 @@ public class KafkaMessageConsumerV2 {
     @KafkaListener(topics = "reservation-create-event-topic", groupId = "${spring.kafka.consumer.group-id}")
     public void extractReservationInfoBy(String message) {
         try {
-            ReservationEventDTOV2 parsedMessage = objectMapper.readValue(message, ReservationEventDTOV2.class);
+            ReservationCreationEventDTOV2 parsedMessage = objectMapper.readValue(message, ReservationCreationEventDTOV2.class);
 
             queueServiceV2.enrollWaitingListByEvent(parsedMessage);
 
@@ -42,8 +42,7 @@ public class KafkaMessageConsumerV2 {
             // 새로운 대기 정보를 포함한 DTO 생성
             ReservationAndQueueEventDTOV2 event = ReservationAndQueueEventDTOV2.from(
                     parsedMessage,
-                    dto.getSequence(),
-                    dto.getTeamsAhead()
+                    dto.getSequence()
                     );
 
             // 메시지 서비스로 전송
@@ -62,7 +61,7 @@ public class KafkaMessageConsumerV2 {
     public void handleReservationCancellation(String message) {
         try {
             // 메시지에서 예약 ID와 식당 ID 추출
-            ReservationCreateEventDTOV2 event = parseMessage(message);
+            ReservationEventDTOV2 event = parseMessage(message);
             queueServiceV2.deleteBy(event.getRestaurantId(), event.getReservationId());
         } catch (Exception e) {
             log.error("메시지 추출 실패 : {}", message, e);
@@ -70,10 +69,10 @@ public class KafkaMessageConsumerV2 {
     }
 
     // 예약, 식당 아이디 추출
-    private ReservationCreateEventDTOV2 parseMessage(String message) {
+    private ReservationEventDTOV2 parseMessage(String message) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(message, ReservationCreateEventDTOV2.class);
+            return objectMapper.readValue(message, ReservationEventDTOV2.class);
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid message format: " + message, e);
         }
