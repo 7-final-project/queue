@@ -30,6 +30,7 @@ public class ReservationAndQueueEventDTOV2 {
                 .userId(event.getUser().getUserId())
                 .slackEmail(event.getUser().getSlackEmail())
                 .headCount(event.getReservation().getHeadCount())
+                .username(event.getUser().getUsername())
                 .sequence(sequence)
                 .build();
     }
