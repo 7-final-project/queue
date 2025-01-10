@@ -21,7 +21,6 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
     private final RedisTemplate<String, Object> redisTemplate;
 
     private static final String WAITING_LIST_KEY_PREFIX = "waiting_list";
-    private static final String LAST_SENT_KEY_PREFIX = "last_sent_event:";
 
     // 대기열에 등록
     public void addWaitingListByRestaurantIdAndReservationId(Long restaurantId, Long reservationId) {
@@ -40,6 +39,8 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
 
         // 식당 Id 에 해당하는 Key 생성
         String key = WAITING_LIST_KEY_PREFIX + restaurantId;
+
+        log.info("Redis 조회 시도: restaurantId={}, reservationId={}", restaurantId, reservationId);
 
         // 사용자 대기 순서 조회
         int rank = Optional.ofNullable(zSetOps.rank(key, String.valueOf(reservationId)))
@@ -85,16 +86,4 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
         ZSetOperations<String, Object> zSetOps = redisTemplate.opsForZSet();
         return zSetOps.range(key, 0, -1); // ZSet의 모든 데이터를 가져옴
     }
-    // 마지막 발송 ID 조회
-    public String getLastSentIdByRestaurantId(Long restaurantId) {
-        String key = LAST_SENT_KEY_PREFIX + restaurantId;
-        return (String) redisTemplate.opsForValue().get(key);
-    }
-
-    // 마지막 발송 ID 저장
-    public void saveLastSentIdByRestaurantIdAndReservationId(Long restaurantId, String reservationId) {
-        String key = LAST_SENT_KEY_PREFIX + restaurantId;
-        redisTemplate.opsForValue().set(key, reservationId);
-    }
-
 }
