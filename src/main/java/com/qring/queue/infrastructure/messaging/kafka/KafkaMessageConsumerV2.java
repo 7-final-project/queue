@@ -11,6 +11,7 @@ import com.qring.queue.infrastructure.messaging.dto.ReservationEventDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationCreationEventDTOV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class KafkaMessageConsumerV2 {
      * 예약 생성 이벤트 소비
      * @param message
      */
-    @KafkaListener(topics = "reservation-create-event-topic", groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = "${spring.kafka.topic.reservation-create-event}", groupId = "${spring.kafka.consumer.group-id}")
     public void extractReservationInfoBy(String message) {
         try {
             ReservationCreationEventDTOV2 parsedMessage = objectMapper.readValue(message, ReservationCreationEventDTOV2.class);
@@ -57,7 +58,7 @@ public class KafkaMessageConsumerV2 {
      * 예약 입장 or 취소 이벤트 소비
      * @param message
      */
-    @KafkaListener(topics = "reservation-update-event-topic", groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = "${spring.kafka.topic.reservation-update-event}", groupId = "${spring.kafka.consumer.group-id}")
     public void handleReservationCancellation(String message) {
         try {
             // 메시지에서 예약 ID와 식당 ID 추출
