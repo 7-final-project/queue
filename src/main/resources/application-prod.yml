@@ -1,0 +1,48 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://q-ring:19000/eureka/
+
+server:
+  port: 19030
+
+spring:
+  cache:
+    type: redis
+  data:
+    redis:
+      host: ${REDIS_PROD_HOST}
+      port: ${REDIS_PROD_PORT}
+
+  datasource:
+    url: ${DB_PROD_URL}
+    username: ${DB_PROD_USER}
+    password: ${DB_PROD_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    open-in-view: false
+
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: ${spring.application.name}-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    topic:
+      queue-alarm-event: queue-alarm-event-topic
+      reservation-create-event: reservation-create-event-topic
+      reservation-update-event: reservation-update-event-topic
