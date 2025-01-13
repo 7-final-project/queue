@@ -7,11 +7,10 @@ import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
 import com.qring.queue.application.v2.res.QueueGetResDTOV2;
 import com.qring.queue.application.v2.service.QueueServiceV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationAndQueueEventDTOV2;
-import com.qring.queue.infrastructure.messaging.dto.ReservationEventDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationCreationEventDTOV2;
+import com.qring.queue.infrastructure.messaging.dto.ReservationEventDTOV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
