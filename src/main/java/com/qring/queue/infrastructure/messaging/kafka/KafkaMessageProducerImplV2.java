@@ -4,6 +4,7 @@ import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
 import com.qring.queue.infrastructure.messaging.dto.QueueAlarmEventDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationAndQueueEventDTOV2;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -11,16 +12,22 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaMessageProducerImplV2 implements KafkaMessageProducerV2 {
 
+    @Value("${spring.kafka.topic.queue-alarm-event}")
+    private String queueAlarmEvent;
+
+    @Value("${spring.kafka.topic.queue-reservation-event}")
+    private String queueReservationEvent;
+
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void publishQueueAlarmEvent(Long reservationId) {
 
         QueueAlarmEventDTOV2 event = new QueueAlarmEventDTOV2(reservationId);
-        kafkaTemplate.send("queue-alarm-event-topic", event);
+        kafkaTemplate.send(queueAlarmEvent, event);
     }
 
     public void publishReservationAndQueueEvent(ReservationAndQueueEventDTOV2 event) {
 
-        kafkaTemplate.send("queue-reservation-event-topic", event);
+        kafkaTemplate.send(queueReservationEvent, event);
     }
 }
