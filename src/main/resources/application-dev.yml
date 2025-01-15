@@ -3,8 +3,6 @@ spring:
     redis:
       host: ${REDIS_LOCAL_HOST_NAME}
       port: ${REDIS_LOCAL_PORT}
-      username: ${REDIS_LOCAL_USERNAME}
-      password: ${REDIS_LOCAL_PASSWORD}
 
   datasource:
     url: ${DB_URL}
@@ -26,7 +24,7 @@ spring:
     import: classpath:application-key.yml
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_DEV_URL}
     consumer:
       group-id: ${spring.application.name}-group
       auto-offset-reset: earliest
