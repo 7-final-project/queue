@@ -28,6 +28,8 @@ public class KafkaMessageConsumerV2 {
      */
     @KafkaListener(topics = "${spring.kafka.topic.reservation-create-event}", groupId = "${spring.kafka.consumer.group-id}")
     public void extractReservationInfoBy(String message) {
+        long startTime = System.currentTimeMillis();
+
         try {
             ReservationCreationEventDTOV2 parsedMessage = objectMapper.readValue(message, ReservationCreationEventDTOV2.class);
 
@@ -51,6 +53,9 @@ public class KafkaMessageConsumerV2 {
 
             // 메시지 서비스로 전송
             kafkaMessageProducerV2.publishReservationAndQueueEvent(parsedMessage);
+
+            long endTime = System.currentTimeMillis();
+            log.info("Message processed in {} ms", endTime - startTime);
         } catch (Exception e) {
             log.error("메시지 추출 실패 : {}", message, e);
             throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "메세지 추출에 실패하였습니다.");
