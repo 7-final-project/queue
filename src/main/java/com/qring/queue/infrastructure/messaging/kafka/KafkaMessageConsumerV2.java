@@ -6,7 +6,6 @@ import com.qring.queue.application.global.exception.QueueException;
 import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
 import com.qring.queue.application.v2.res.QueueGetResDTOV2;
 import com.qring.queue.application.v2.service.QueueServiceV2;
-import com.qring.queue.infrastructure.messaging.dto.ReservationAndQueueEventDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationCreationEventDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationEventDTOV2;
 import lombok.RequiredArgsConstructor;
@@ -39,14 +38,19 @@ public class KafkaMessageConsumerV2 {
                             parsedMessage.getReservation().getId())
                     .getQueueInfo();
 
+            ReservationCreationEventDTOV2.Queue queue = ReservationCreationEventDTOV2.Queue.from(dto.getSequence());
+
             // 새로운 대기 정보를 포함한 DTO 생성
-            ReservationAndQueueEventDTOV2 event = ReservationAndQueueEventDTOV2.from(
-                    parsedMessage,
-                    dto.getSequence()
+            parsedMessage = new ReservationCreationEventDTOV2(
+                    parsedMessage.getUser(),
+                    parsedMessage.getRestaurant(),
+                    parsedMessage.getReservation(),
+                    queue // 새로운 Queue 정보 설정
             );
+            log.info("userId : {}", parsedMessage.getUser().getUserId());
 
             // 메시지 서비스로 전송
-            kafkaMessageProducerV2.publishReservationAndQueueEvent(event);
+            kafkaMessageProducerV2.publishReservationAndQueueEvent(parsedMessage);
         } catch (Exception e) {
             log.error("메시지 추출 실패 : {}", message, e);
             throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "메세지 추출에 실패하였습니다.");

@@ -2,7 +2,7 @@ package com.qring.queue.infrastructure.messaging.kafka;
 
 import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
 import com.qring.queue.infrastructure.messaging.dto.QueueAlarmEventDTOV2;
-import com.qring.queue.infrastructure.messaging.dto.ReservationAndQueueEventDTOV2;
+import com.qring.queue.infrastructure.messaging.dto.ReservationCreationEventDTOV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -26,7 +26,7 @@ public class KafkaMessageProducerImplV2 implements KafkaMessageProducerV2 {
         kafkaTemplate.send(queueAlarmEvent, event);
     }
 
-    public void publishReservationAndQueueEvent(ReservationAndQueueEventDTOV2 event) {
+    public void publishReservationAndQueueEvent(ReservationCreationEventDTOV2 event) {
 
         kafkaTemplate.send(queueReservationEvent, event);
     }

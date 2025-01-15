@@ -14,6 +14,7 @@ public class ReservationCreationEventDTOV2 {
     private User user;
     private Restaurant restaurant;
     private Reservation reservation;
+    private Queue queue;
 
     @Getter
     @Builder
@@ -66,6 +67,20 @@ public class ReservationCreationEventDTOV2 {
                     .id(id)
                     .restaurantId(restaurantId)
                     .headCount(headCount)
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Queue {
+        private int sequence;
+
+        public static Queue from(int sequence) {
+            return Queue.builder()
+                    .sequence(sequence)
                     .build();
         }
     }
