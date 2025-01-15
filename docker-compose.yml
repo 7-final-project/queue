@@ -1,9 +1,9 @@
 services:
-  redis-stack:
-    image: redis/redis-stack
-    container_name: redis-stack-compose
+  redis:
+    image: redis:latest
+    container_name: redis
     restart: always
-    command: ["redis-server", "--requirepass", "systempass", "--notify-keyspace-events", "KEA"]
+    command: ["redis-server", "--notify-keyspace-events", "KEA"]
     ports:
       - 6379:6379
       - 8001:8001
