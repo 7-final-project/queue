@@ -6,8 +6,7 @@ import com.qring.queue.application.global.exception.QueueException;
 import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
 import com.qring.queue.application.v2.res.QueueGetResDTOV2;
 import com.qring.queue.application.v2.service.QueueServiceV2;
-import com.qring.queue.infrastructure.messaging.dto.ReservationAndQueueEventDTOV2;
-import com.qring.queue.infrastructure.messaging.dto.ReservationCreationEventDTOV2;
+import com.qring.queue.infrastructure.messaging.dto.CreateReservationMessageDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationEventDTOV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,24 +28,34 @@ public class KafkaMessageConsumerV2 {
      */
     @KafkaListener(topics = "${spring.kafka.topic.reservation-create-event}", groupId = "${spring.kafka.consumer.group-id}")
     public void extractReservationInfoBy(String message) {
+        long startTime = System.currentTimeMillis();
+
         try {
-            ReservationCreationEventDTOV2 parsedMessage = objectMapper.readValue(message, ReservationCreationEventDTOV2.class);
+            CreateReservationMessageDTOV2 parsedMessage = objectMapper.readValue(message, CreateReservationMessageDTOV2.class);
 
             queueServiceV2.enrollWaitingListByEvent(parsedMessage);
 
             QueueGetResDTOV2.QueueInfo dto = queueServiceV2.getBy(
-                            parsedMessage.getReservation().getRestaurantId(),
+                            parsedMessage.getReservation().getRestaurant().getId(),
                             parsedMessage.getReservation().getId())
-                            .getQueueInfo();
+                    .getQueueInfo();
+
+            CreateReservationMessageDTOV2.Queue queue = CreateReservationMessageDTOV2.Queue.from(dto.getSequence());
+
+            log.info("restaurantId : {}", parsedMessage.getReservation().getRestaurant().getId());
 
             // 새로운 대기 정보를 포함한 DTO 생성
-            ReservationAndQueueEventDTOV2 event = ReservationAndQueueEventDTOV2.from(
-                    parsedMessage,
-                    dto.getSequence()
-                    );
+            parsedMessage = new CreateReservationMessageDTOV2(
+                    parsedMessage.getUser(),
+                    parsedMessage.getReservation(),
+                    queue // 새로운 Queue 정보 설정
+            );
 
             // 메시지 서비스로 전송
-            kafkaMessageProducerV2.publishReservationAndQueueEvent(event);
+            kafkaMessageProducerV2.publishReservationAndQueueEvent(parsedMessage);
+
+            long endTime = System.currentTimeMillis();
+            log.info("Message processed in {} ms", endTime - startTime);
         } catch (Exception e) {
             log.error("메시지 추출 실패 : {}", message, e);
             throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "메세지 추출에 실패하였습니다.");
