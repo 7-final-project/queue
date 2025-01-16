@@ -2,7 +2,7 @@ package com.qring.queue.application.v2.service;
 
 import com.qring.queue.application.v2.message.redis.RedisMessagePublisherV2;
 import com.qring.queue.application.v2.res.QueueGetResDTOV2;
-import com.qring.queue.infrastructure.messaging.dto.ReservationCreationEventDTOV2;
+import com.qring.queue.infrastructure.messaging.dto.CreateReservationMessageDTOV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,15 +17,15 @@ public class QueueServiceV2 {
     private final RedisMessagePublisherV2 redisMessagePublisherV2;
 
     // 대기열 등록
-    public void enrollWaitingListByEvent(ReservationCreationEventDTOV2 event) {
+    public void enrollWaitingListByEvent(CreateReservationMessageDTOV2 event) {
 
         // Redis에 예약 정보 저장
         redisMessagePublisherV2.addWaitingListByRestaurantIdAndReservationId(
-                event.getReservation().getRestaurantId(),
+                event.getReservation().getRestaurant().getId(),
                 event.getReservation().getId());
 
         log.info("대기열 등록 성공 : Restaurant ID = {}, Reservation ID = {}",
-                event.getReservation().getRestaurantId(),
+                event.getReservation().getRestaurant().getId(),
                 event.getReservation().getId());
     }
 

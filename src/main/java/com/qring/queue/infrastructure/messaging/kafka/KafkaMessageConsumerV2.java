@@ -6,7 +6,7 @@ import com.qring.queue.application.global.exception.QueueException;
 import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
 import com.qring.queue.application.v2.res.QueueGetResDTOV2;
 import com.qring.queue.application.v2.service.QueueServiceV2;
-import com.qring.queue.infrastructure.messaging.dto.ReservationCreationEventDTOV2;
+import com.qring.queue.infrastructure.messaging.dto.CreateReservationMessageDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.ReservationEventDTOV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,25 +31,25 @@ public class KafkaMessageConsumerV2 {
         long startTime = System.currentTimeMillis();
 
         try {
-            ReservationCreationEventDTOV2 parsedMessage = objectMapper.readValue(message, ReservationCreationEventDTOV2.class);
+            CreateReservationMessageDTOV2 parsedMessage = objectMapper.readValue(message, CreateReservationMessageDTOV2.class);
 
             queueServiceV2.enrollWaitingListByEvent(parsedMessage);
 
             QueueGetResDTOV2.QueueInfo dto = queueServiceV2.getBy(
-                            parsedMessage.getReservation().getRestaurantId(),
+                            parsedMessage.getReservation().getRestaurant().getId(),
                             parsedMessage.getReservation().getId())
                     .getQueueInfo();
 
-            ReservationCreationEventDTOV2.Queue queue = ReservationCreationEventDTOV2.Queue.from(dto.getSequence());
+            CreateReservationMessageDTOV2.Queue queue = CreateReservationMessageDTOV2.Queue.from(dto.getSequence());
+
+            log.info("restaurantId : {}", parsedMessage.getReservation().getRestaurant().getId());
 
             // 새로운 대기 정보를 포함한 DTO 생성
-            parsedMessage = new ReservationCreationEventDTOV2(
+            parsedMessage = new CreateReservationMessageDTOV2(
                     parsedMessage.getUser(),
-                    parsedMessage.getRestaurant(),
                     parsedMessage.getReservation(),
                     queue // 새로운 Queue 정보 설정
             );
-            log.info("userId : {}", parsedMessage.getUser().getUserId());
 
             // 메시지 서비스로 전송
             kafkaMessageProducerV2.publishReservationAndQueueEvent(parsedMessage);
