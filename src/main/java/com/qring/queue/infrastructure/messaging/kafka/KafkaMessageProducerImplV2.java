@@ -18,6 +18,12 @@ public class KafkaMessageProducerImplV2 implements KafkaMessageProducerV2 {
     @Value("${spring.kafka.topic.queue-reservation-event}")
     private String queueReservationEvent;
 
+    @Value("${spring.kafka.topic.queue-create-fail-event}")
+    private String queueCreateFailEvent;
+
+    @Value("${spring.kafka.topic.queue-delete-fail-event}")
+    private String queueDeleteFailEvent;
+
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void publishQueueAlarmEvent(Long reservationId) {
@@ -29,5 +35,15 @@ public class KafkaMessageProducerImplV2 implements KafkaMessageProducerV2 {
     public void publishReservationAndQueueEvent(CreateReservationMessageDTOV2 event) {
 
         kafkaTemplate.send(queueReservationEvent, event);
+    }
+
+    public void publishQueueCreateFailEvent(Long reservationId) {
+
+        kafkaTemplate.send(queueCreateFailEvent, reservationId);
+    }
+
+    public void publishQueueDeleteFailEvent(Long reservationId) {
+
+        kafkaTemplate.send(queueDeleteFailEvent, reservationId);
     }
 }
