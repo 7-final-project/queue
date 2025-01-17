@@ -16,10 +16,9 @@ public class QueueServiceV2 {
 
     private final RedisMessagePublisherV2 redisMessagePublisherV2;
 
-    // 대기열 등록
+    // NOTE: 대기열 등록
     public void enrollWaitingListByEvent(CreateReservationMessageDTOV2 event) {
 
-        // Redis에 예약 정보 저장
         redisMessagePublisherV2.addWaitingListByRestaurantIdAndReservationId(
                 event.getReservation().getRestaurant().getId(),
                 event.getReservation().getId());
@@ -29,20 +28,20 @@ public class QueueServiceV2 {
                 event.getReservation().getId());
     }
 
-    // 사용자 대기 순서 반환
+    // NOTE: 사용자 대기 순서 반환
     public QueueGetResDTOV2 getBy(Long restaurantId, Long reservationId) {
 
         return redisMessagePublisherV2.getQueueInfoByRestaurantIdAndReservationId(restaurantId, reservationId);
     }
 
-    // 대기열에서 제거
+    // NOTE: 대기열에서 제거
     public void deleteBy(Long restaurantId, Long reservationId) {
 
         redisMessagePublisherV2.removeQueueByRestaurantIdAndReservationId(restaurantId, reservationId);
     }
 
     // ============== 대기 순번 알림 발송 관련 ================
-    // 식당별 대기열 리스트 조회
+    // NOTE: 식당별 대기열 리스트 조회
     public List<Long> getWaitingListByRestaurantId(Long restaurantId) {
         String key = "waiting_list" + restaurantId; // Redis Key 생성
         Set<Object> waitingList = redisMessagePublisherV2.getFromWaitingListByKey(key); // Redis에서 모든 데이터 조회

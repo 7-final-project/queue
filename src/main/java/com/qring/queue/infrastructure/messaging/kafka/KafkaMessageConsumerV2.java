@@ -43,7 +43,7 @@ public class KafkaMessageConsumerV2 {
 
             CreateReservationMessageDTOV2.Queue queue = CreateReservationMessageDTOV2.Queue.from(dto.getSequence());
 
-            // NOTE : 새로운 대기 정보를 포함한 DTO 생성
+            // NOTE: 새로운 대기 정보를 포함한 DTO 생성
             parsedMessage = new CreateReservationMessageDTOV2(
                     parsedMessage.getUser(),
                     parsedMessage.getReservation(),
