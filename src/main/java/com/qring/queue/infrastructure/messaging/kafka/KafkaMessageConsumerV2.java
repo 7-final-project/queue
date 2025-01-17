@@ -54,7 +54,7 @@ public class KafkaMessageConsumerV2 {
             kafkaMessageProducerV2.publishReservationAndQueueEvent(parsedMessage);
 
             long endTime = System.currentTimeMillis();
-            log.info("Message processed in {} ms", endTime - startTime);
+            log.info("메세지 처리 속도 : {} ms", endTime - startTime);
         } catch (Exception e) {
 
             log.error("대기열 생성 실패 : {}", message, e);
