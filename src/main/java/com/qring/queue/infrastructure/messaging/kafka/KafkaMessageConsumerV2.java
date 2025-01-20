@@ -22,17 +22,18 @@ public class KafkaMessageConsumerV2 {
     private final KafkaMessageProducerV2 kafkaMessageProducerV2;
     private final ObjectMapper objectMapper;
 
-    /**
-     * 예약 생성 이벤트 소비
-     * @param message
-     */
+    // NOTE: 예약 생성 이벤트 소비
     @KafkaListener(topics = "${spring.kafka.topic.reservation-create-event}", groupId = "${spring.kafka.consumer.group-id}")
     public void extractReservationInfoBy(String message) {
         long startTime = System.currentTimeMillis();
+        Long reservationId = 0L;
 
         try {
             CreateReservationMessageDTOV2 parsedMessage = objectMapper.readValue(message, CreateReservationMessageDTOV2.class);
 
+            reservationId = parsedMessage.getReservation().getId();
+
+            // NOTE: 대기열에 등록
             queueServiceV2.enrollWaitingListByEvent(parsedMessage);
 
             QueueGetResDTOV2.QueueInfo dto = queueServiceV2.getBy(
@@ -42,42 +43,47 @@ public class KafkaMessageConsumerV2 {
 
             CreateReservationMessageDTOV2.Queue queue = CreateReservationMessageDTOV2.Queue.from(dto.getSequence());
 
-            log.info("restaurantId : {}", parsedMessage.getReservation().getRestaurant().getId());
-
-            // 새로운 대기 정보를 포함한 DTO 생성
+            // NOTE: 새로운 대기 정보를 포함한 DTO 생성
             parsedMessage = new CreateReservationMessageDTOV2(
                     parsedMessage.getUser(),
                     parsedMessage.getReservation(),
-                    queue // 새로운 Queue 정보 설정
+                    queue
             );
 
-            // 메시지 서비스로 전송
+            // NOTE: 메시지 서비스로 전송
             kafkaMessageProducerV2.publishReservationAndQueueEvent(parsedMessage);
 
             long endTime = System.currentTimeMillis();
-            log.info("Message processed in {} ms", endTime - startTime);
+            log.info("메세지 처리 속도 : {} ms", endTime - startTime);
         } catch (Exception e) {
-            log.error("메시지 추출 실패 : {}", message, e);
-            throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "메세지 추출에 실패하였습니다.");
+
+            log.error("대기열 생성 실패 : {}", message, e);
+
+            kafkaMessageProducerV2.publishQueueCreateFailEvent(reservationId);
+
+            throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "대기열 생성에 실패하였습니다.");
         }
     }
 
-    /**
-     * 예약 입장 or 취소 이벤트 소비
-     * @param message
-     */
+    // NOTE: 예약 입장 or 취소 이벤트 소비
     @KafkaListener(topics = "${spring.kafka.topic.reservation-update-event}", groupId = "${spring.kafka.consumer.group-id}")
     public void handleReservationCancellation(String message) {
+        Long reservationId = 0L;
         try {
-            // 메시지에서 예약 ID와 식당 ID 추출
+            // NOTE: 메시지에서 예약 ID와 식당 ID 추출
             UpdateReservationMessageDTOV2 event = parseMessage(message);
+            reservationId = event.getReservation().getId();
             queueServiceV2.deleteBy(event.getReservation().getRestaurant().getId(), event.getReservation().getId());
         } catch (Exception e) {
             log.error("메시지 추출 실패 : {}", message, e);
+
+            kafkaMessageProducerV2.publishQueueDeleteFailEvent(reservationId);
+
+            throw new QueueException(ErrorCode.BAD_REQUEST_ERROR, "대기열 삭제에 실패하였습니다.");
         }
     }
 
-    // 예약, 식당 아이디 추출
+    // NOTE: 예약, 식당 아이디 추출
     private UpdateReservationMessageDTOV2 parseMessage(String message) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();

@@ -7,4 +7,8 @@ public interface KafkaMessageProducerV2 {
     void publishQueueAlarmEvent(Long reservationId);
 
     void publishReservationAndQueueEvent(CreateReservationMessageDTOV2 event);
+
+    void publishQueueCreateFailEvent(Long reservationId);
+
+    void publishQueueDeleteFailEvent(Long reservationId);
 }
