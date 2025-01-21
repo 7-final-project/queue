@@ -52,3 +52,9 @@ spring:
 
   config:
     import: classpath:application-key.yml
+
+version:
+  v1:
+    enabled: true
+  v2:
+    enabled: false
