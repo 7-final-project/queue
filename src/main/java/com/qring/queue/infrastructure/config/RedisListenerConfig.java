@@ -12,6 +12,7 @@ import org.springframework.data.redis.listener.Topic;
 @Configuration
 @RequiredArgsConstructor
 public class RedisListenerConfig {
+
     private final RedisConnectionFactory redisConnectionFactory;
 
     @Bean
@@ -22,9 +23,11 @@ public class RedisListenerConfig {
         // Keyspace Notifications 채널 구독: zadd (추가) 및 zrem (삭제) 이벤트
         Topic zaddTopic = new PatternTopic("__keyevent@*__:zadd");
         Topic zremTopic = new PatternTopic("__keyevent@*__:zrem");
+        Topic reservationTopic = new PatternTopic("reservation-create-event");
 
         container.addMessageListener(redisKeyspaceListener, zaddTopic);
         container.addMessageListener(redisKeyspaceListener, zremTopic);
+        container.addMessageListener(redisKeyspaceListener, reservationTopic);
 
         return container;
     }
