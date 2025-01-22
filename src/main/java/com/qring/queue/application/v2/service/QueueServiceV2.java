@@ -3,11 +3,14 @@ package com.qring.queue.application.v2.service;
 import com.qring.queue.application.v2.message.redis.RedisMessagePublisherV2;
 import com.qring.queue.application.v2.res.QueueGetResDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.CreateReservationMessageDTOV2;
+import com.qring.queue.infrastructure.messaging.dto.CreateReservationMessageDTOV3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,15 @@ public class QueueServiceV2 {
         log.info("대기열 등록 성공 : Restaurant ID = {}, Reservation ID = {}",
                 event.getReservation().getRestaurant().getId(),
                 event.getReservation().getId());
+    }
+
+    // NOTE: 대기열 등록
+    public void enrollWaitingListByEventV2(CreateReservationMessageDTOV3 event) {
+
+        redisMessagePublisherV2.addWaitingListByRestaurantIdAndReservationId(
+                event.getRestaurantId(),
+                event.getReservationId());
+
     }
 
     // NOTE: 사용자 대기 순서 반환

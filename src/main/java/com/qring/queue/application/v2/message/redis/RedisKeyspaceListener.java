@@ -2,6 +2,8 @@ package com.qring.queue.application.v2.message.redis;
 
 import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
 import com.qring.queue.application.v2.service.QueueServiceV2;
+import com.qring.queue.infrastructure.messaging.dto.CreateReservationMessageDTOV3;
+import com.qring.queue.infrastructure.util.EventSerializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
@@ -30,6 +32,8 @@ public class RedisKeyspaceListener implements MessageListener {
 
         if (event.equals("__keyevent@*__:zrem")) {
             handleZRemEvent(restaurantId);
+        } else if (event.equals("reservation-create-event")) {
+            queueService.enrollWaitingListByEventV2(EventSerializer.deserialize(key, CreateReservationMessageDTOV3.class));
         } else {
             log.warn("Redis 알 수 없는 이벤트 감지: {}", event);
         }
