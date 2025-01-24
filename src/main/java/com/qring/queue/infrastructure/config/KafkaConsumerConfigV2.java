@@ -16,7 +16,6 @@ import java.util.Map;
 
 @EnableKafka
 @Configuration
-@ConditionalOnProperty(name = "version.v2.enabled", havingValue = "true", matchIfMissing = true)
 public class KafkaConsumerConfigV2 {
 
     @Value("${spring.kafka.bootstrap-servers}")
@@ -30,7 +29,6 @@ public class KafkaConsumerConfigV2 {
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
-        // 배치 처리 관련 설정
         configProps.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 500);
         configProps.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, 1024);
         configProps.put(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, 200);
