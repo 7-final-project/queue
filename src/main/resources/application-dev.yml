@@ -39,22 +39,8 @@ spring:
         spring.json.trusted.packages: '*'
     topic:
       queue-alarm-event: queue-alarm-event-topic
-      reservation-create-event:
-        v1: reservation-create-event-topic-v1
-        v2: reservation-create-event-topic-v2
-        v3: reservation-create-event-topic-v3
-        v4: reservation-create-event-topic-v4
-        v5: reservation-create-event-topic-.*
+      reservation-create-event: reservation-create-event-topic
       reservation-update-event: reservation-update-event-topic
       queue-reservation-event: queue-reservation-event-topic
       queue-create-fail-event: queue-create-fail-event-topic
       queue-delete-fail-event: queue-delete-fail-event-topic
-
-  config:
-    import: classpath:application-key.yml
-
-version:
-  v1:
-    enabled: true
-  v2:
-    enabled: false

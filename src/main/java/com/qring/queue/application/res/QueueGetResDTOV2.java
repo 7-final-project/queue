@@ -1,4 +1,4 @@
-package com.qring.queue.application.v2.res;
+package com.qring.queue.application.res;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,7 +1,7 @@
-package com.qring.queue.application.v2.service;
+package com.qring.queue.application.service;
 
-import com.qring.queue.application.v2.message.redis.RedisMessagePublisherV2;
-import com.qring.queue.application.v2.res.QueueGetResDTOV2;
+import com.qring.queue.application.messaging.redis.RedisMessagePublisherV2;
+import com.qring.queue.application.res.QueueGetResDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.CreateReservationMessageDTOV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

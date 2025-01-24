@@ -1,7 +1,7 @@
-package com.qring.queue.application.v2.message.redis;
+package com.qring.queue.infrastructure.messaging.redis;
 
-import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
-import com.qring.queue.application.v2.service.QueueServiceV2;
+import com.qring.queue.application.messaging.kafka.KafkaMessageProducerV2;
+import com.qring.queue.application.service.QueueServiceV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;

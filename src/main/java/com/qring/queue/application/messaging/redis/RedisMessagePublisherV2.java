@@ -1,6 +1,6 @@
-package com.qring.queue.application.v2.message.redis;
+package com.qring.queue.application.messaging.redis;
 
-import com.qring.queue.application.v2.res.QueueGetResDTOV2;
+import com.qring.queue.application.res.QueueGetResDTOV2;
 
 import java.util.Set;
 

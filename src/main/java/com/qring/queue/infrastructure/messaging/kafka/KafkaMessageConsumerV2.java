@@ -3,9 +3,9 @@ package com.qring.queue.infrastructure.messaging.kafka;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qring.queue.application.global.exception.ErrorCode;
 import com.qring.queue.application.global.exception.QueueException;
-import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
-import com.qring.queue.application.v2.res.QueueGetResDTOV2;
-import com.qring.queue.application.v2.service.QueueServiceV2;
+import com.qring.queue.application.messaging.kafka.KafkaMessageProducerV2;
+import com.qring.queue.application.res.QueueGetResDTOV2;
+import com.qring.queue.application.service.QueueServiceV2;
 import com.qring.queue.infrastructure.messaging.dto.CreateReservationMessageDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.UpdateReservationMessageDTOV2;
 import lombok.RequiredArgsConstructor;
@@ -15,28 +15,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "QueueService - KafkaMessageConsumerV2 Log")
+@Slf4j(topic = "KafkaMessageConsumerV2")
 public class KafkaMessageConsumerV2 {
-
-    // -----
-    // NOTE : 다중 파티션을 적용한 카프카 컨슈머입니다.
-    // -----
 
     private final QueueServiceV2 queueServiceV2;
     private final KafkaMessageProducerV2 kafkaMessageProducerV2;
     private final ObjectMapper objectMapper;
 
-    // -----
-    /*
-        NOTE
-          1. 단일 파티션          : v1
-          2. 단일 파티션 + 배치처리 : v2
-          3. 다중 파티션          : v3
-          4. 다중 파티션 + 배치처리 : v4
-          5. 다중 토픽           : v5
-    */
-    // -----
-    @KafkaListener(topics = "${spring.kafka.topic.reservation-create-event.v1}", groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = "${spring.kafka.topic.reservation-create-event}", groupId = "${spring.kafka.consumer.group-id}")
     public void extractReservationInfoBy(String message) {
         long startTime = System.currentTimeMillis();
         Long reservationId = 0L;
