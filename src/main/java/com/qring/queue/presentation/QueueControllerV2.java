@@ -1,8 +1,8 @@
-package com.qring.queue.presentation.v2.controller;
+package com.qring.queue.presentation;
 
 import com.qring.queue.application.global.dto.ResDTO;
-import com.qring.queue.application.v2.res.QueueGetResDTOV2;
-import com.qring.queue.application.v2.service.QueueServiceV2;
+import com.qring.queue.application.res.QueueGetResDTOV2;
+import com.qring.queue.application.service.QueueServiceV2;
 import com.qring.queue.infrastructure.docs.QueueControllerSwagger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -2,8 +2,8 @@ package com.qring.queue.infrastructure.messaging.redis;
 
 import com.qring.queue.application.global.exception.ErrorCode;
 import com.qring.queue.application.global.exception.QueueException;
-import com.qring.queue.application.v2.message.redis.RedisMessagePublisherV2;
-import com.qring.queue.application.v2.res.QueueGetResDTOV2;
+import com.qring.queue.application.messaging.redis.RedisMessagePublisherV2;
+import com.qring.queue.application.res.QueueGetResDTOV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -45,14 +45,6 @@ public class RedisMessagePublisherImplV2 implements RedisMessagePublisherV2 {
         int rank = Optional.ofNullable(zSetOps.rank(key, String.valueOf(reservationId)))
                 .map(Long::intValue)
                 .orElseThrow(() -> new QueueException(ErrorCode.NOT_FOUND_ERROR, "대기열에 존재하지 않거나 이미 삭제되었습니다."));
-
-        // ========== 추후 미루기 기능에 사용될 것 같아 삭제하지 않고 주석 처리 ===========
-//        // 대기열에 사용자가 없을 경우 등록
-//        if (rank == -1) {
-//            addWaitingListByRestaurantIdAndReservationId(restaurantId, reservationId);
-//            rank = getRankByKeyAndValue(zSetOps, key, String.valueOf(reservationId));
-//        }
-        // ===================================================================
 
         QueueGetResDTOV2.QueueInfo queueInfo = QueueGetResDTOV2.QueueInfo.from(
                 rank + 1,

@@ -1,7 +1,7 @@
 package com.qring.queue.infrastructure.docs;
 
 import com.qring.queue.application.global.dto.ResDTO;
-import com.qring.queue.application.v2.res.QueueGetResDTOV2;
+import com.qring.queue.application.res.QueueGetResDTOV2;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

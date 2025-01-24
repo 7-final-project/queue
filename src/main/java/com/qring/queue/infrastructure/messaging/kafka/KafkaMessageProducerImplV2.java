@@ -1,6 +1,6 @@
 package com.qring.queue.infrastructure.messaging.kafka;
 
-import com.qring.queue.application.v2.message.kafka.KafkaMessageProducerV2;
+import com.qring.queue.application.messaging.kafka.KafkaMessageProducerV2;
 import com.qring.queue.infrastructure.messaging.dto.QueueAlarmEventDTOV2;
 import com.qring.queue.infrastructure.messaging.dto.CreateReservationMessageDTOV2;
 import lombok.RequiredArgsConstructor;

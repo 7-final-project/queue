@@ -1,4 +1,4 @@
-package com.qring.queue.application.v2.message.kafka;
+package com.qring.queue.application.messaging.kafka;
 
 import com.qring.queue.infrastructure.messaging.dto.CreateReservationMessageDTOV2;
 
